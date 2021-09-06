@@ -1,10 +1,10 @@
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
+import '../../domain/entities/bulletin.dart';
 
 import '../../data/datasources/bulletin_data_source.dart';
 import '../../data/repositories/bulletin_repository_impl.dart';
-import '../../domain/entities/bulletin.dart';
 import '../stores/bulletins_state.dart';
 
 class CasesPage extends StatefulWidget {
@@ -44,10 +44,7 @@ class _CasesPageState extends State<CasesPage> {
     _disposers.addAll([
       reaction(
         (_) => bulletinsState.submitTimeStamp,
-        (dynamic _) {
-          print(widget.submitTimeStamp.toString());
-          bulletinsState.loadBulletins();
-        },
+        (_) => bulletinsState.loadBulletins(),
       ),
     ]);
   }

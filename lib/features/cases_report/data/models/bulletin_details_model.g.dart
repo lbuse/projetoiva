@@ -1,24 +1,25 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'bulletin_model.dart';
+part of 'bulletin_details_model.dart';
 
 // **************************************************************************
 // JsonSerializableGenerator
 // **************************************************************************
 
-BulletinEnvelope _$BulletinEnvelopeFromJson(Map<String, dynamic> json) {
-  return BulletinEnvelope(
+BulletinDetailsEnvelope _$BulletinDetailsEnvelopeFromJson(
+    Map<String, dynamic> json) {
+  return BulletinDetailsEnvelope(
     json['count'] as int?,
     json['next'] as String?,
     json['previous'] as String?,
     (json['results'] as List<dynamic>?)
-        ?.map((e) => BulletinModel.fromJson(e as Map<String, dynamic>))
+        ?.map((e) => BulletinDetailsModel.fromJson(e as Map<String, dynamic>))
         .toList(),
   );
 }
 
-BulletinModel _$BulletinModelFromJson(Map<String, dynamic> json) {
-  return BulletinModel(
+BulletinDetailsModel _$BulletinDetailsModelFromJson(Map<String, dynamic> json) {
+  return BulletinDetailsModel(
     date: json['date'] == null ? null : DateTime.parse(json['date'] as String),
     state: json['state'] as String?,
     city: json['city'] as String?,

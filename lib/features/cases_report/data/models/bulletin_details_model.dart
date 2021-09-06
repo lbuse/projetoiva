@@ -1,26 +1,32 @@
 import 'package:json_annotation/json_annotation.dart';
 
+import '../../domain/entities/bulletin_details.dart';
 import '../../domain/entities/bulletin.dart';
 
-part 'bulletin_model.g.dart';
+part 'bulletin_details_model.g.dart';
 
+/// Modelo que executa a conversão do `JSON` para Objeto.
+///
+/// Contém informações adicionais da consulta e a lista de [BulletinDetails].
 @JsonSerializable(createToJson: false)
-class BulletinEnvelope {
+class BulletinDetailsEnvelope {
   final int? count;
   final String? next;
   final String? previous;
   @JsonKey(name: 'results')
-  final List<BulletinModel>? bulletins;
+  final List<BulletinDetailsModel>? bulletins;
 
-  BulletinEnvelope(this.count, this.next, this.previous, this.bulletins);
+  const BulletinDetailsEnvelope(
+      this.count, this.next, this.previous, this.bulletins);
 
-  factory BulletinEnvelope.fromJson(Map<String, dynamic> json) =>
-      _$BulletinEnvelopeFromJson(json);
+  factory BulletinDetailsEnvelope.fromJson(Map<String, dynamic> json) =>
+      _$BulletinDetailsEnvelopeFromJson(json);
 }
 
+/// Modelo que executa a conversão do `JSON` para Objeto.
 @JsonSerializable(createToJson: false)
-class BulletinModel extends Bulletin {
-  BulletinModel({
+class BulletinDetailsModel extends BulletinDetails {
+  const BulletinDetailsModel({
     DateTime? date,
     String? state,
     String? city,
@@ -50,6 +56,6 @@ class BulletinModel extends Bulletin {
           orderForPlace,
         );
 
-  factory BulletinModel.fromJson(Map<String, dynamic> json) =>
-      _$BulletinModelFromJson(json);
+  factory BulletinDetailsModel.fromJson(Map<String, dynamic> json) =>
+      _$BulletinDetailsModelFromJson(json);
 }

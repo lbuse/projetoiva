@@ -1,11 +1,16 @@
 import 'package:mobx/mobx.dart';
-
+import '../../domain/entities/bulletin_details.dart';
 import '../../domain/entities/bulletin.dart';
+
 import '../../domain/repositories/bulletin_repository.dart';
 import '../../domain/usecases/get_cases.dart';
 
 part 'bulletins_state.g.dart';
 
+/// Estado da interface.
+///
+/// Exibe os [BulletinDetails] de forma que o usuário possa endenter a
+/// informação.
 class BulletinsState extends _BulletinsState with _$BulletinsState {
   BulletinsState(BulletinRepository repository) {
     super.repository = repository;
@@ -26,7 +31,7 @@ abstract class _BulletinsState with Store {
   @observable
   PlaceType placeType = PlaceType.all;
   @observable
-  ObservableList<Bulletin> bulletins = ObservableList();
+  ObservableList<BulletinDetails> bulletins = ObservableList();
   @observable
   bool isLoading = false;
   @observable
@@ -62,7 +67,7 @@ abstract class _BulletinsState with Store {
   @action
   void changePlaceType(PlaceType value) => placeType = value;
   @action
-  void changeBulletinsList(List<Bulletin> list) =>
+  void changeBulletinsList(List<BulletinDetails> list) =>
       bulletins = ObservableList.of(list);
   @action
   void changeIsLoading(bool value) => isLoading = value;
@@ -90,7 +95,7 @@ abstract class _BulletinsState with Store {
         );
       },
       (bulletins) {
-        print('bulls ${bulletins.length}');
+        print('bulletins ${bulletins.length}');
         changeBulletinsList(bulletins);
       },
     );

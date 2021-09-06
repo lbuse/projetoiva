@@ -1,23 +1,23 @@
 import 'dart:convert';
 
 import 'package:http/http.dart' as http;
+import 'package:projetoiva/core/helpers/formatter.dart';
 
 import '../../../../core/error/server_exception.dart';
-import '../../../../core/helpers/formatter.dart';
+import '../../domain/entities/bulletin_details.dart';
 import '../../domain/entities/bulletin.dart';
-import '../models/bulletin_model.dart';
+import '../models/bulletin_details_model.dart';
 
 abstract class BulletinDataSource {
-  /// Consulta os casos por estado com paginação [page]
+  /// Requisita uma lista.
+  ///
+  /// Retorna uma lista de [BulletinDetails] com base nos parâmetros
+  /// opcionais [Bulletin] e [page].
+  ///
   /// Exemplo de chamada https://brasil.io/dataset/covid19/caso/?search=&date=&state=&city=&place_type=state&is_last=&city_ibge_code=&order_for_place=
-  Future<List<Bulletin>> findAll({
+  Future<List<BulletinDetails>> findAll({
+    Bulletin bulletin,
     int? page,
-    DateTime? date,
-    PlaceType? placeType,
-    bool? isLast,
-    String? state,
-    String? city,
-    String? cityIbgeCode,
   });
 }
 
@@ -31,26 +31,32 @@ class BulletinDataSourceImpl implements BulletinDataSource {
   })  : _httpClient = httpClient ?? http.Client(),
         _token = token ?? '';
 
+  /// Requisita uma lista.
+  ///
+  /// Retorna uma lista de [BulletinDetails] com base nos parâmetros
+  /// opcionais [Bulletin] e [page], em caso de falha da requisição
+  /// uma [ServerException] será lançada e em caso de problema com a resposta,
+  /// uma [FormatException] será lançada.
+  ///
+  /// Exemplo de chamada https://brasil.io/dataset/covid19/caso/?search=&date=&state=&city=&place_type=state&is_last=&city_ibge_code=&order_for_place=
   @override
-  Future<List<Bulletin>> findAll({
+  Future<List<BulletinDetails>> findAll({
+    Bulletin bulletin = const Bulletin(),
     int? page,
-    DateTime? date,
-    PlaceType? placeType,
-    bool? isLast,
-    String? state = '',
-    String? city = '',
-    String? cityIbgeCode = '',
   }) async {
-    final placeTypeString = Bulletin.placeTypeToString(placeType);
-    final dateString = Bulletin.dateTimeToStringOrEmpty(date);
-    final isLastString = Formatters.valueToEmptyStringOrNull(isLast);
-    state = Formatters.valueToEmptyStringOrNull(state);
-    city = Formatters.valueToEmptyStringOrNull(city);
-    cityIbgeCode = Formatters.valueToEmptyStringOrNull(cityIbgeCode);
+    final placeTypeString = Bulletin.placeTypeToStringOrEmpty(
+      bulletin.placeType,
+    );
+    final dateString = Bulletin.dateTimeToStringOrEmptyOrEmpty(bulletin.date);
+    final String pageString = Formatters.valueToStringOrEmpty(page);
+
+    print(
+      'https://api.brasil.io/v1/dataset/covid19/caso/data/?page=$pageString&date=$dateString&state=${bulletin.stateToStringOrEmpty}&city=${bulletin.cityToStringOrEmpty}&place_type=$placeTypeString&is_last=${bulletin.isLastToStringOrEmpty}&city_ibge_code=${bulletin.cityIbgeCodeToStringOrEmpty}',
+    );
 
     final response = await _httpClient.get(
       Uri.parse(
-        'https://api.brasil.io/v1/dataset/covid19/caso/data/?page=$page&date=$dateString&state=$state&city=$city&place_type=$placeTypeString&is_last=$isLastString&city_ibge_code=$cityIbgeCode',
+        'https://api.brasil.io/v1/dataset/covid19/caso/data/?page=$pageString&date=$dateString&state=${bulletin.stateToStringOrEmpty}&city=${bulletin.cityToStringOrEmpty}&place_type=$placeTypeString&is_last=${bulletin.isLastToStringOrEmpty}&city_ibge_code=${bulletin.cityIbgeCodeToStringOrEmpty}',
       ),
       headers: {
         'Content-type': 'application/json',
@@ -59,13 +65,13 @@ class BulletinDataSourceImpl implements BulletinDataSource {
       },
     );
 
-    print(response.statusCode);
-
     if (response.statusCode == 200) {
-      return BulletinEnvelope.fromJson(
+      return BulletinDetailsEnvelope.fromJson(
             json.decode(utf8.decode(response.bodyBytes)),
           ).bulletins ??
           [];
+    } else if (response.statusCode == 400) {
+      return [];
     } else {
       throw ServerException(
         statusCode: response.statusCode,

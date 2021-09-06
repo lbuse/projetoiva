@@ -87,13 +87,13 @@ mixin _$BulletinsState on _BulletinsState, Store {
   final _$bulletinsAtom = Atom(name: '_BulletinsState.bulletins');
 
   @override
-  ObservableList<Bulletin> get bulletins {
+  ObservableList<BulletinDetails> get bulletins {
     _$bulletinsAtom.reportRead();
     return super.bulletins;
   }
 
   @override
-  set bulletins(ObservableList<Bulletin> value) {
+  set bulletins(ObservableList<BulletinDetails> value) {
     _$bulletinsAtom.reportWrite(value, super.bulletins, () {
       super.bulletins = value;
     });
@@ -203,7 +203,7 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void changeBulletinsList(List<Bulletin> list) {
+  void changeBulletinsList(List<BulletinDetails> list) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.changeBulletinsList');
     try {

@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:projetoiva/core/helpers/formatter.dart';
 
 /// Representa tipo de filtro de resultado na API
 /// all = '' (vazio quando todos os tipos são utilizados)
@@ -11,6 +12,9 @@ enum PlaceType {
   state,
 }
 
+/// Define uma entidade do boletim de casos e óbitos com parâmetros que
+/// podem ser utilizados em uma requisição da API como também no retorna
+/// de uma requisição.
 class Bulletin {
   final DateTime? date;
   final String? state;
@@ -18,45 +22,53 @@ class Bulletin {
   @JsonKey(
     name: 'place_type',
     fromJson: stringToPlaceType,
-    toJson: placeTypeToString,
+    toJson: placeTypeToStringOrEmpty,
   )
   final PlaceType? placeType;
-  final int? confirmed;
-  final int? deaths;
   @JsonKey(name: 'is_last')
   final bool? isLast;
-  @JsonKey(name: 'estimated_population')
-  final int? estimatedPopulation;
-  @JsonKey(name: 'estimated_population_2019')
-  final int? estimatedPopulation2019;
   @JsonKey(name: 'city_ibge_code')
   final String? cityIbgeCode;
-  @JsonKey(name: 'confirmed_per_100k_inhabitants')
-  final double? confirmedPer100kInhabitants;
-  @JsonKey(name: 'death_rate')
-  final double? deathRate;
   @JsonKey(name: 'order_for_place')
   final int? orderForPlace;
 
-  Bulletin(
+  const Bulletin({
     this.date,
     this.state,
     this.city,
     this.placeType,
-    this.confirmed,
-    this.deaths,
     this.isLast,
-    this.estimatedPopulation,
-    this.estimatedPopulation2019,
     this.cityIbgeCode,
-    this.confirmedPer100kInhabitants,
-    this.deathRate,
     this.orderForPlace,
-  );
+  });
 
-  double get rateFormated => deathRate! * 100;
+  /// Converte `bool` para `String` e em caso de nulo, uma `String` vazia
+  /// é retornada.
+  ///
+  /// Util para métodos que API com parâmetros que aceitam o valor vazio.
+  String get isLastToStringOrEmpty => Formatters.valueToStringOrEmpty(isLast);
 
-  static String placeTypeToString(PlaceType? value) {
+  /// Em caso de nulo, uma `String` vazia é retornada.
+  ///
+  /// Util para métodos que API com parâmetros que aceitam o valor vazio.
+  String get stateToStringOrEmpty => Formatters.valueToStringOrEmpty(state);
+
+  /// Em caso de nulo, uma `String` vazia é retornada.
+  ///
+  /// Util para métodos que API com parâmetros que aceitam o valor vazio.
+  String get cityToStringOrEmpty => Formatters.valueToStringOrEmpty(city);
+
+  /// Em caso de nulo, uma `String` vazia é retornada.
+  ///
+  /// Util para métodos que API com parâmetros que aceitam o valor vazio.
+  String get cityIbgeCodeToStringOrEmpty =>
+      Formatters.valueToStringOrEmpty(cityIbgeCode);
+
+  /// Converte `enum` para `String` e em caso de um tipo não identificado,
+  /// uma `String` vazia é retornada.
+  ///
+  /// Util para métodos que API com parâmetros que aceitam o valor vazio.
+  static String placeTypeToStringOrEmpty(PlaceType? value) {
     switch (value) {
       case PlaceType.city:
         return 'city';
@@ -78,8 +90,11 @@ class Bulletin {
     }
   }
 
-  /// Formata uma data para o formato 'yyyy-MM-dd'
-  static String dateTimeToStringOrEmpty(DateTime? value) {
+  ///  Formata um `DateTime` para o formato 'yyyy-MM-dd' e retorna um `String`,
+  ///  em caso de nulo, uma `String` vazia é retornada.
+  ///
+  /// Util para métodos que API com parâmetros que aceitam o valor vazio.
+  static String dateTimeToStringOrEmptyOrEmpty(DateTime? value) {
     if (value == null) {
       return '';
     }

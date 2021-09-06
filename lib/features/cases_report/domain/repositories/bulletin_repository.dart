@@ -1,16 +1,16 @@
 import 'package:dartz/dartz.dart';
-
-import '../../../../core/error/failures.dart';
+import '../entities/bulletin_details.dart';
 import '../entities/bulletin.dart';
 
+import '../../../../core/error/failures.dart';
+
+/// Repositório com operações destinadas a fontes de dados de casos e óbitos.
 abstract class BulletinRepository {
-  Future<Either<Failure, List<Bulletin>>> findAll({
+  /// Requisita uma lista.
+  ///
+  /// Retorna uma lista de [BulletinDetails] com base nos parâmetros opcionais [Bulletin] e [page], ou em caso de problema, uma [Failure] é retornada.
+  Future<Either<Failure, List<BulletinDetails>>> findAll({
+    Bulletin bulletin,
     int? page,
-    DateTime? date,
-    PlaceType? placeType,
-    bool? isLast,
-    String? state,
-    String? city,
-    String? cityIbgeCode,
   });
 }
