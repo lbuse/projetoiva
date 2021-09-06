@@ -61,20 +61,16 @@ class DatePicker extends StatelessWidget {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    try {
-      final DateTime? picked = await showDatePicker(
-        locale: Locale('pt', 'BR'),
-        context: context,
-        initialDate: currentDate ?? DateTime.now(),
-        currentDate: currentDate ?? DateTime.now(),
-        firstDate: DateTime(2019, 10),
-        lastDate: DateTime.now(),
-      );
-      if (picked != null && picked != currentDate) {
-        onSelected(DateFormat('dd/MM/yyyy').format(picked));
-      }
-    } on Exception {
-      // ignore
+    final DateTime? picked = await showDatePicker(
+      locale: Locale('pt', 'BR'),
+      context: context,
+      initialDate: currentDate ?? DateTime.now(),
+      currentDate: currentDate ?? DateTime.now(),
+      firstDate: DateTime(2019, 10),
+      lastDate: DateTime.now(),
+    );
+    if (picked != null && picked != currentDate) {
+      onSelected(DateFormat('dd/MM/yyyy').format(picked));
     }
   }
 }
