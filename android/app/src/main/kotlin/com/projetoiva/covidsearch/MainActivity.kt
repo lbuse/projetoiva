@@ -1,4 +1,4 @@
-package com.promidia.projetoiva
+package com.projetoiva.covidsearch
 
 import io.flutter.embedding.android.FlutterActivity
 
