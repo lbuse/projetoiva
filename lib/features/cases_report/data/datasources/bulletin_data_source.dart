@@ -41,19 +41,12 @@ class BulletinDataSourceImpl implements BulletinDataSource {
     String? city = '',
     String? cityIbgeCode = '',
   }) async {
-    // https://brasil.io/dataset/covid19/caso/?search=&date=&state=&city=&place_type=state&is_last=&city_ibge_code=&order_for_place=
-
     final placeTypeString = Bulletin.placeTypeToString(placeType);
     final dateString = Bulletin.dateTimeToStringOrEmpty(date);
     final isLastString = Formatters.valueToEmptyStringOrNull(isLast);
     state = Formatters.valueToEmptyStringOrNull(state);
     city = Formatters.valueToEmptyStringOrNull(city);
     cityIbgeCode = Formatters.valueToEmptyStringOrNull(cityIbgeCode);
-
-    // TODO remover print
-    print(
-      'https://api.brasil.io/v1/dataset/covid19/caso/data/?page=$page&date=$dateString&state=$state&city=$city&place_type=$placeTypeString&is_last=$isLastString&city_ibge_code=$cityIbgeCode',
-    );
 
     final response = await _httpClient.get(
       Uri.parse(
