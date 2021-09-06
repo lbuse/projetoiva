@@ -7,9 +7,9 @@ part 'uf_model.g.dart';
 @JsonSerializable(createToJson: false)
 class UfModel extends Uf {
   UfModel({
-    int id,
-    String nome,
-    String sigla,
+    int? id,
+    String? nome,
+    String? sigla,
   }) : super(
           id: id,
           nome: nome,

@@ -7,18 +7,18 @@ import '../../domain/usecases/get_cases.dart';
 part 'bulletins_state.g.dart';
 
 class BulletinsState extends _BulletinsState with _$BulletinsState {
-  BulletinsState(BulletinRepository repository) : assert(repository != null) {
+  BulletinsState(BulletinRepository repository) {
     super.repository = repository;
   }
 }
 
 abstract class _BulletinsState with Store {
-  BulletinRepository repository;
+  late BulletinRepository repository;
 
   @observable
   int page = 1;
   @observable
-  DateTime date;
+  DateTime? date;
   @observable
   String state = '';
   @observable
@@ -32,7 +32,7 @@ abstract class _BulletinsState with Store {
   @observable
   String errorMessage = '';
   @observable
-  DateTime submitTimeStamp = DateTime.now();
+  DateTime? submitTimeStamp = DateTime.now();
 
   // @observable
   // ObservableStream<DateTime> _time = Stream.periodic(const Duration(seconds: 1))
@@ -44,33 +44,32 @@ abstract class _BulletinsState with Store {
   //     BulletinDataTableSource(bulletins);
 
   @action
-  void changePage(int value) => page = value ?? 1;
+  void changePage(int value) => page = value;
   @action
-  void changeDate(DateTime value) => date = value;
+  void changeDate(DateTime? value) => date = value;
   @action
-  void changeState(String value) {
+  void changeState(String? value) {
     state = value ?? '';
     changePlaceType(state.isEmpty ? PlaceType.all : PlaceType.state);
   }
 
   @action
-  void changeCity(String value) {
+  void changeCity(String? value) {
     city = value ?? '';
     changePlaceType(city.isEmpty ? PlaceType.state : PlaceType.city);
   }
 
   @action
-  void changePlaceType(PlaceType value) =>
-      placeType = value == null ? PlaceType.all : value;
+  void changePlaceType(PlaceType value) => placeType = value;
   @action
   void changeBulletinsList(List<Bulletin> list) =>
-      bulletins = ObservableList.of(list ?? []);
+      bulletins = ObservableList.of(list);
   @action
   void changeIsLoading(bool value) => isLoading = value;
   @action
   void changeErrorMessage(String value) => errorMessage = value;
   @action
-  void changeSubmitTimeStamp(DateTime value) => submitTimeStamp = value;
+  void changeSubmitTimeStamp(DateTime? value) => submitTimeStamp = value;
 
   /// Requisita lista de boletins
   Future<void> loadBulletins() async {
@@ -86,7 +85,7 @@ abstract class _BulletinsState with Store {
     actual.fold(
       (failure) {
         changeErrorMessage(
-          failure?.message ??
+          failure.message ??
               'Não foi possível obter os dados, tente novamnete.',
         );
       },

@@ -1,13 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/usecases/usecase.dart';
-import '../../data/datasources/city_datasource.dart';
-import '../../data/datasources/uf_datasource.dart';
-import '../../data/repositories/city_repository_impl.dart';
-import '../../data/repositories/uf_repository_impl.dart';
 import '../../domain/entities/city.dart';
 import '../../domain/entities/uf.dart';
 import '../../domain/repositories/city_repository.dart';
@@ -19,12 +14,11 @@ part 'panel_state.g.dart';
 
 class PanelState extends _PanelState with _$PanelState {
   PanelState({
-    @required this.ufRepository,
-    @required this.cityRepository,
+    required this.ufRepository,
+    required this.cityRepository,
   }) {
-    super._ufRepository = ufRepository ?? UfRepositoryImpl(UfDataSourceImpl());
-    super._cityRepository =
-        cityRepository ?? CityRepositoryImpl(CityDataSourceImpl());
+    super._ufRepository = ufRepository;
+    super._cityRepository = cityRepository;
   }
 
   final UfRepository ufRepository;
@@ -32,8 +26,8 @@ class PanelState extends _PanelState with _$PanelState {
 }
 
 abstract class _PanelState with Store {
-  UfRepository _ufRepository;
-  CityRepository _cityRepository;
+  late UfRepository _ufRepository;
+  late CityRepository _cityRepository;
 
   @observable
   int selectedUf = 0;
@@ -72,7 +66,7 @@ abstract class _PanelState with Store {
   bool get isCitiesInputEnabled => isUfInputEnabled;
   @computed
   String get initialDateFormatted {
-    if (initialDate == null || initialDate.isEmpty) {
+    if (initialDate.isEmpty) {
       return DateFormat('dd/MM/yyyy').format(DateTime.now());
     } else {
       return initialDate;
@@ -89,13 +83,11 @@ abstract class _PanelState with Store {
   // }
 
   @computed
-  DateTime get initialDateStringToDateTime {
+  DateTime? get initialDateStringToDateTime {
     String date = '';
-    if (initialDate != null) {
-      final list = initialDate.split('/');
-      if (list.length == 3) {
-        date = '${list.last}-${list.elementAt(1)}-${list.first}';
-      }
+    final list = initialDate.split('/');
+    if (list.length == 3) {
+      date = '${list.last}-${list.elementAt(1)}-${list.first}';
     }
     try {
       return DateTime.parse(date);
@@ -124,29 +116,29 @@ abstract class _PanelState with Store {
   List<DropdownMenuItem<int>> get ufMenuItems => ufs
       .map((uf) => DropdownMenuItem<int>(
             value: uf.id,
-            child: Text(uf.nome),
+            child: Text(uf.nome!),
           ))
       .toList();
   @computed
   List<DropdownMenuItem<int>> get cityMenuItems => cities
       .map((city) => DropdownMenuItem<int>(
             value: city.id,
-            child: Text(city.nome),
+            child: Text(city.nome!),
           ))
       .toList();
   @computed
-  int get dropdownUfValue => selectedUf <= 0 ? null : selectedUf;
+  int? get dropdownUfValue => selectedUf <= 0 ? null : selectedUf;
   @computed
-  String get selectedUfInitials => ufs
+  String? get selectedUfInitials => ufs
       .firstWhere(
         (uf) => selectedUf > 0 && uf.id == selectedUf,
         orElse: () => Uf(id: 0, nome: '', sigla: ''),
       )
       .sigla;
   @computed
-  int get dropdownCityValue => selectedCity <= 0 ? null : selectedCity;
+  int? get dropdownCityValue => selectedCity <= 0 ? null : selectedCity;
   @computed
-  String get selectedCityName => cities
+  String? get selectedCityName => cities
       .firstWhere(
         (city) => selectedCity > 0 && city.id == selectedCity,
         orElse: () => City(id: 0, nome: ''),
@@ -154,8 +146,12 @@ abstract class _PanelState with Store {
       .nome;
 
   @action
-  void changeSelectedUf(int value) {
-    if (value > 0 && value != selectedUf) {
+  void changeSelectedUf(int? value) {
+    if (value == null || value == 0) {
+      changeSelectedCity(0);
+      changeCities([]);
+      selectedUf = 0;
+    } else if (value > 0 && value != selectedUf) {
       selectedUf = value;
       changeSelectedCity(0);
       loadCities();
@@ -163,23 +159,23 @@ abstract class _PanelState with Store {
   }
 
   @action
-  void changeSelectedCity(int value) => selectedCity = value < 0 ? 0 : value;
+  void changeSelectedCity(int? value) =>
+      selectedCity = value == null || value < 0 ? 0 : value;
   @action
-  void changeInitialDate(String value) =>
-      initialDate = value ?? DateTime.now().toString();
+  void changeInitialDate(String value) => initialDate = value;
   // @action
   // void changeFinalDate(String value) =>
   //     finalDate = value ?? DateTime.now().toString();
   @action
   void changeUfs(List<Uf> list) {
     final defaultItem = Uf(id: 0, nome: 'Nenhum', sigla: '');
-    ufs = ObservableList.of([defaultItem, ...list] ?? [defaultItem]);
+    ufs = ObservableList.of([defaultItem, ...list]);
   }
 
   @action
   void changeCities(List<City> list) {
     final defaultItem = City(id: 0, nome: 'Nenhuma');
-    cities = ObservableList.of([defaultItem, ...list] ?? [defaultItem]);
+    cities = ObservableList.of([defaultItem, ...list]);
   }
 
   @action
@@ -203,12 +199,12 @@ abstract class _PanelState with Store {
     actual.fold(
       (failure) {
         changeErrorMessage(
-          failure?.message ??
+          failure.message ??
               'Não foi possível carregar os estados, tente novamnete.',
         );
       },
       (ufs) {
-        ufs.sort((a, b) => a.nome.compareTo(b.nome));
+        ufs.sort((a, b) => a.nome!.compareTo(b.nome!));
         changeUfs(ufs);
       },
     );
@@ -219,7 +215,7 @@ abstract class _PanelState with Store {
   /// que preenchem filtros do painel.
   Future<void> loadCities() async {
     changeIsLoadingCities(true);
-    final sigla = ufs.firstWhere((uf) => uf.id == selectedUf).sigla;
+    final sigla = ufs.firstWhere((uf) => uf.id == selectedUf).sigla!;
     final actual = await GetCitiesByUfs(_cityRepository)(
       Params(sigla),
     );
@@ -227,12 +223,12 @@ abstract class _PanelState with Store {
     actual.fold(
       (failure) {
         changeErrorMessage(
-          failure?.message ??
+          failure.message ??
               'Não foi possível carrega as cidades, tente novamnete.',
         );
       },
       (cities) {
-        cities.sort((a, b) => a.nome.compareTo(b.nome));
+        cities.sort((a, b) => a.nome!.compareTo(b.nome!));
         changeCities(cities);
       },
     );

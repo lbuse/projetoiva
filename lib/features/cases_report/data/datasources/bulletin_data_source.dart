@@ -11,13 +11,13 @@ abstract class BulletinDataSource {
   /// Consulta os casos por estado com paginação [page]
   /// Exemplo de chamada https://brasil.io/dataset/covid19/caso/?search=&date=&state=&city=&place_type=state&is_last=&city_ibge_code=&order_for_place=
   Future<List<Bulletin>> findAll({
-    int page,
-    DateTime date,
-    PlaceType placeType,
-    bool isLast,
-    String state,
-    String city,
-    String cityIbgeCode,
+    int? page,
+    DateTime? date,
+    PlaceType? placeType,
+    bool? isLast,
+    String? state,
+    String? city,
+    String? cityIbgeCode,
   });
 }
 
@@ -26,20 +26,20 @@ class BulletinDataSourceImpl implements BulletinDataSource {
   final String _token;
 
   BulletinDataSourceImpl({
-    http.Client httpClient,
-    String token,
+    http.Client? httpClient,
+    String? token,
   })  : _httpClient = httpClient ?? http.Client(),
         _token = token ?? '';
 
   @override
   Future<List<Bulletin>> findAll({
-    int page,
-    DateTime date,
-    PlaceType placeType,
-    bool isLast,
-    String state = '',
-    String city = '',
-    String cityIbgeCode = '',
+    int? page,
+    DateTime? date,
+    PlaceType? placeType,
+    bool? isLast,
+    String? state = '',
+    String? city = '',
+    String? cityIbgeCode = '',
   }) async {
     // https://brasil.io/dataset/covid19/caso/?search=&date=&state=&city=&place_type=state&is_last=&city_ibge_code=&order_for_place=
 
@@ -71,7 +71,7 @@ class BulletinDataSourceImpl implements BulletinDataSource {
     if (response.statusCode == 200) {
       return BulletinEnvelope.fromJson(
             json.decode(utf8.decode(response.bodyBytes)),
-          )?.bulletins ??
+          ).bulletins ??
           [];
     } else {
       throw ServerException(

@@ -7,14 +7,13 @@ import '../../domain/usecases/get_vaccinated.dart';
 part 'vaccination_state.g.dart';
 
 class VaccinationState extends _VaccinationState with _$VaccinationState {
-  VaccinationState(VaccinationRepository repository)
-      : assert(repository != null) {
+  VaccinationState(VaccinationRepository repository) {
     super.repository = repository;
   }
 }
 
 abstract class _VaccinationState with Store {
-  VaccinationRepository repository;
+  late VaccinationRepository repository;
 
   @observable
   String scrollId = '';
@@ -26,10 +25,10 @@ abstract class _VaccinationState with Store {
   String errorMessage = '';
 
   @action
-  void changePage(String value) => scrollId = value ?? '';
+  void changePage(String value) => scrollId = value;
   @action
   void changeVaccinesApplied(List<Vaccination> list) =>
-      vaccinesApplied = ObservableList.of(list) ?? [];
+      vaccinesApplied = (ObservableList.of(list));
   @action
   void changeIsLoading(bool value) => isLoading = value;
   @action
@@ -43,7 +42,7 @@ abstract class _VaccinationState with Store {
     actual.fold(
       (failure) {
         changeErrorMessage(
-          failure?.message ??
+          failure.message ??
               'Não foi possível carregar os estados, tente novamnete.',
         );
       },

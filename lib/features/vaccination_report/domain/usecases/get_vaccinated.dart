@@ -6,9 +6,7 @@ import '../entities/vaccination.dart';
 import '../repositories/vaccination_repository.dart';
 
 class GetVaccinated implements Usecase<List<Vaccination>, Params> {
-  GetVaccinated(
-    this.repository,
-  ) : assert(repository != null);
+  GetVaccinated(this.repository);
 
   final VaccinationRepository repository;
 
@@ -24,7 +22,7 @@ class GetVaccinated implements Usecase<List<Vaccination>, Params> {
 }
 
 class Params {
-  final String scrollId;
+  final String? scrollId;
 
   const Params({
     this.scrollId,

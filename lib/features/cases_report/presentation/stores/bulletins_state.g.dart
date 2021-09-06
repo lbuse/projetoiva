@@ -27,13 +27,13 @@ mixin _$BulletinsState on _BulletinsState, Store {
   final _$dateAtom = Atom(name: '_BulletinsState.date');
 
   @override
-  DateTime get date {
+  DateTime? get date {
     _$dateAtom.reportRead();
     return super.date;
   }
 
   @override
-  set date(DateTime value) {
+  set date(DateTime? value) {
     _$dateAtom.reportWrite(value, super.date, () {
       super.date = value;
     });
@@ -132,13 +132,13 @@ mixin _$BulletinsState on _BulletinsState, Store {
   final _$submitTimeStampAtom = Atom(name: '_BulletinsState.submitTimeStamp');
 
   @override
-  DateTime get submitTimeStamp {
+  DateTime? get submitTimeStamp {
     _$submitTimeStampAtom.reportRead();
     return super.submitTimeStamp;
   }
 
   @override
-  set submitTimeStamp(DateTime value) {
+  set submitTimeStamp(DateTime? value) {
     _$submitTimeStampAtom.reportWrite(value, super.submitTimeStamp, () {
       super.submitTimeStamp = value;
     });
@@ -159,7 +159,7 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void changeDate(DateTime value) {
+  void changeDate(DateTime? value) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.changeDate');
     try {
@@ -170,7 +170,7 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void changeState(String value) {
+  void changeState(String? value) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.changeState');
     try {
@@ -181,7 +181,7 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void changeCity(String value) {
+  void changeCity(String? value) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.changeCity');
     try {
@@ -236,7 +236,7 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void changeSubmitTimeStamp(DateTime value) {
+  void changeSubmitTimeStamp(DateTime? value) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.changeSubmitTimeStamp');
     try {

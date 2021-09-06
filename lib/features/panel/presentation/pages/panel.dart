@@ -10,7 +10,7 @@ import '../../data/repositories/uf_repository_impl.dart';
 import '../stores/panel_state.dart';
 
 class PanelPage extends StatefulWidget {
-  const PanelPage({Key key}) : super(key: key);
+  const PanelPage({Key? key}) : super(key: key);
 
   @override
   _PanelPageState createState() => _PanelPageState();
@@ -107,9 +107,8 @@ class _PanelPageState extends State<PanelPage> {
     return Form(
       key: formKey,
       child: Row(
-        mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.end,
-        crossAxisAlignment: CrossAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           SizedBox(
             width: 180,
@@ -148,21 +147,14 @@ class _PanelPageState extends State<PanelPage> {
           Flexible(
             fit: FlexFit.tight,
             child: Observer(
-              builder: (_) => DropdownButtonFormField<int>(
+              builder: (_) => _buildDropdownFilter<int>(
                 items: panelState.ufMenuItems,
                 value: panelState.dropdownUfValue,
                 onChanged: panelState.isUfInputEnabled
                     ? panelState.changeSelectedUf
                     : null,
-                isExpanded: true,
-                decoration: const InputDecoration()
-                    .applyDefaults(Theme.of(context).inputDecorationTheme)
-                    .copyWith(
-                      border: const OutlineInputBorder(),
-                      isDense: true,
-                      labelText:
-                          panelState.isLoadingUfs ? 'Carregando...' : 'Estado',
-                    ),
+                labelText: panelState.isLoadingUfs ? 'Carregando...' : 'Estado',
+                isLoading: panelState.isLoadingUfs,
               ),
             ),
           ),
@@ -170,22 +162,15 @@ class _PanelPageState extends State<PanelPage> {
           Flexible(
             fit: FlexFit.tight,
             child: Observer(
-              builder: (_) => DropdownButtonFormField<int>(
+              builder: (_) => _buildDropdownFilter<int>(
                 items: panelState.cityMenuItems,
                 value: panelState.dropdownCityValue,
                 onChanged: panelState.isCitiesInputEnabled
                     ? panelState.changeSelectedCity
                     : null,
-                isExpanded: true,
-                decoration: const InputDecoration()
-                    .applyDefaults(Theme.of(context).inputDecorationTheme)
-                    .copyWith(
-                      border: const OutlineInputBorder(),
-                      isDense: true,
-                      labelText: panelState.isLoadingCities
-                          ? 'Carregando...'
-                          : 'Cidade',
-                    ),
+                labelText:
+                    panelState.isLoadingCities ? 'Carregando...' : 'Cidade',
+                isLoading: panelState.isLoadingCities,
               ),
             ),
           ),
@@ -200,6 +185,46 @@ class _PanelPageState extends State<PanelPage> {
           ),
         ],
       ),
+    );
+  }
+
+  Column _buildDropdownFilter<T>({
+    required List<DropdownMenuItem<T>>? items,
+    T? value,
+    void Function(T?)? onChanged,
+    required String labelText,
+    bool isLoading = false,
+  }) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        DropdownButtonFormField<T>(
+          items: items,
+          value: value,
+          onChanged: panelState.isCitiesInputEnabled ? onChanged : null,
+          isExpanded: true,
+          decoration: const InputDecoration()
+              .applyDefaults(Theme.of(context).inputDecorationTheme)
+              .copyWith(
+                border: const OutlineInputBorder(),
+                isDense: true,
+                labelText: isLoading ? 'Carregando...' : 'Cidade',
+              ),
+        ),
+        isLoading
+            ? Container(
+                padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                height: 3.0,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                  child: LinearProgressIndicator(),
+                ),
+              )
+            : const SizedBox(height: 3.0),
+      ],
     );
   }
 

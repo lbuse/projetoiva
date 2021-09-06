@@ -7,7 +7,7 @@ import '../../domain/repositories/city_repository.dart';
 import '../datasources/city_datasource.dart';
 
 class CityRepositoryImpl implements CityRepository {
-  CityRepositoryImpl(this.dataSource) : assert(dataSource != null);
+  CityRepositoryImpl(this.dataSource);
 
   final CityDataSource dataSource;
 

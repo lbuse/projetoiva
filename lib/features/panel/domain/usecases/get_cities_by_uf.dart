@@ -6,9 +6,7 @@ import '../entities/city.dart';
 import '../repositories/city_repository.dart';
 
 class GetCitiesByUfs implements Usecase<List<City>, Params> {
-  GetCitiesByUfs(
-    this.repository,
-  ) : assert(repository != null);
+  GetCitiesByUfs(this.repository);
 
   final CityRepository repository;
 
@@ -36,5 +34,5 @@ class GetCitiesByUfs implements Usecase<List<City>, Params> {
 class Params {
   final String uf;
 
-  Params(this.uf) : assert(uf != null);
+  Params(this.uf);
 }

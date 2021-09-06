@@ -12,7 +12,7 @@ abstract class UfDataSource {
 
 class UfDataSourceImpl implements UfDataSource {
   UfDataSourceImpl({
-    http.Client httpClient,
+    http.Client? httpClient,
   }) : _httpClient = httpClient ?? http.Client();
 
   final http.Client _httpClient;

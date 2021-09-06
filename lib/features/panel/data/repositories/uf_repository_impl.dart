@@ -7,7 +7,7 @@ import '../../domain/repositories/uf_repository.dart';
 import '../datasources/uf_datasource.dart';
 
 class UfRepositoryImpl implements UfRepository {
-  UfRepositoryImpl(this.dataSource) : assert(dataSource != null);
+  UfRepositoryImpl(this.dataSource);
 
   final UfDataSource dataSource;
 

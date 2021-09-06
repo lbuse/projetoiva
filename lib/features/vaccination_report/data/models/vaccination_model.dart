@@ -7,9 +7,9 @@ part 'vaccination_model.g.dart';
 @JsonSerializable(createToJson: false)
 class VaccinationEnvelope {
   @JsonKey(name: '_scroll_id')
-  final String scrollId;
+  final String? scrollId;
   @JsonKey(name: 'hits')
-  final SystemRecords data;
+  final SystemRecords? data;
 
   const VaccinationEnvelope(this.scrollId, this.data);
 
@@ -20,7 +20,7 @@ class VaccinationEnvelope {
 @JsonSerializable(createToJson: false)
 class SystemRecords {
   @JsonKey(name: 'hits')
-  final List<DataSource> vaccinesApplied;
+  final List<DataSource>? vaccinesApplied;
 
   SystemRecords(this.vaccinesApplied);
 
@@ -31,7 +31,7 @@ class SystemRecords {
 @JsonSerializable(createToJson: false)
 class DataSource {
   @JsonKey(name: '_source')
-  final VaccinationModel data;
+  final VaccinationModel? data;
 
   const DataSource(this.data);
 
@@ -42,45 +42,45 @@ class DataSource {
 @JsonSerializable(createToJson: false)
 class VaccinationModel extends Vaccination {
   const VaccinationModel({
-    String pacienteEnderecoCoIbgeMunicipio,
-    String documentId,
-    String dataImportacaoRnds,
-    String sistemaOrigem,
-    String version,
-    String estabelecimentoRazaoSocial,
-    String pacienteNacionalidadeEnumNacionalidade,
-    String timestamp,
-    String pacienteEnderecoCoPais,
-    String vacinaGrupoAtendimentoNome,
-    String vacinaGrupoAtendimentoCodigo,
-    String vacinaCategoriaCodigo,
-    String vacinaDescricaoDose,
-    String vacinaCategoriaNome,
-    String vacinaLote,
-    String pacienteEnumSexoBiologico,
-    String pacienteEnderecoNmMunicipio,
-    String pacienteEnderecoUf,
-    String pacienteEnderecoNmPais,
-    String vacinaNome,
-    DateTime dtDeleted,
-    String pacienteRacaCorValor,
-    String pacienteId,
-    String estabelecimentoValor,
-    String pacienteDataNascimento,
-    String vacinaFabricanteNome,
-    String vacinaDataAplicacao,
-    String pacienteEnderecoCep,
-    String estabelecimentoMunicipioNome,
-    String estabelecimentoMunicipioCodigo,
-    String status,
-    String estabelecimentoUf,
-    String idSistemaOrigem,
-    int pacienteIdade,
-    String vacinaFabricanteReferencia,
-    String vacinaCodigo,
-    String pacienteRacaCorCodigo,
-    String redshift,
-    String estalecimentoNoFantasia,
+    String? pacienteEnderecoCoIbgeMunicipio,
+    String? documentId,
+    String? dataImportacaoRnds,
+    String? sistemaOrigem,
+    String? version,
+    String? estabelecimentoRazaoSocial,
+    String? pacienteNacionalidadeEnumNacionalidade,
+    String? timestamp,
+    String? pacienteEnderecoCoPais,
+    String? vacinaGrupoAtendimentoNome,
+    String? vacinaGrupoAtendimentoCodigo,
+    String? vacinaCategoriaCodigo,
+    String? vacinaDescricaoDose,
+    String? vacinaCategoriaNome,
+    String? vacinaLote,
+    String? pacienteEnumSexoBiologico,
+    String? pacienteEnderecoNmMunicipio,
+    String? pacienteEnderecoUf,
+    String? pacienteEnderecoNmPais,
+    String? vacinaNome,
+    DateTime? dtDeleted,
+    String? pacienteRacaCorValor,
+    String? pacienteId,
+    String? estabelecimentoValor,
+    String? pacienteDataNascimento,
+    String? vacinaFabricanteNome,
+    String? vacinaDataAplicacao,
+    String? pacienteEnderecoCep,
+    String? estabelecimentoMunicipioNome,
+    String? estabelecimentoMunicipioCodigo,
+    String? status,
+    String? estabelecimentoUf,
+    String? idSistemaOrigem,
+    int? pacienteIdade,
+    String? vacinaFabricanteReferencia,
+    String? vacinaCodigo,
+    String? pacienteRacaCorCodigo,
+    String? redshift,
+    String? estalecimentoNoFantasia,
   }) : super(
           pacienteEnderecoCoIbgeMunicipio: pacienteEnderecoCoIbgeMunicipio,
           documentId: documentId,

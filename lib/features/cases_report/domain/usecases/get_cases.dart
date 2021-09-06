@@ -6,9 +6,7 @@ import '../entities/bulletin.dart';
 import '../repositories/bulletin_repository.dart';
 
 class GetCases implements Usecase<List<Bulletin>, Params> {
-  GetCases(
-    this.repository,
-  ) : assert(repository != null);
+  GetCases(this.repository);
 
   final BulletinRepository repository;
 
@@ -32,13 +30,13 @@ class GetCases implements Usecase<List<Bulletin>, Params> {
 }
 
 class Params {
-  final int page;
-  final DateTime date;
+  final int? page;
+  final DateTime? date;
   final PlaceType placeType;
-  final bool isLast;
-  final String state;
-  final String city;
-  final String cityIbgeCode;
+  final bool? isLast;
+  final String? state;
+  final String? city;
+  final String? cityIbgeCode;
 
   Params({
     this.page,

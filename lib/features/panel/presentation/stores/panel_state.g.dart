@@ -9,82 +9,82 @@ part of 'panel_state.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$PanelState on _PanelState, Store {
-  Computed<bool> _$isInitialDateValidComputed;
+  Computed<bool>? _$isInitialDateValidComputed;
 
   @override
   bool get isInitialDateValid => (_$isInitialDateValidComputed ??=
           Computed<bool>(() => super.isInitialDateValid,
               name: '_PanelState.isInitialDateValid'))
       .value;
-  Computed<bool> _$isUfInputEnabledComputed;
+  Computed<bool>? _$isUfInputEnabledComputed;
 
   @override
   bool get isUfInputEnabled => (_$isUfInputEnabledComputed ??= Computed<bool>(
           () => super.isUfInputEnabled,
           name: '_PanelState.isUfInputEnabled'))
       .value;
-  Computed<bool> _$isCitiesInputEnabledComputed;
+  Computed<bool>? _$isCitiesInputEnabledComputed;
 
   @override
   bool get isCitiesInputEnabled => (_$isCitiesInputEnabledComputed ??=
           Computed<bool>(() => super.isCitiesInputEnabled,
               name: '_PanelState.isCitiesInputEnabled'))
       .value;
-  Computed<String> _$initialDateFormattedComputed;
+  Computed<String>? _$initialDateFormattedComputed;
 
   @override
   String get initialDateFormatted => (_$initialDateFormattedComputed ??=
           Computed<String>(() => super.initialDateFormatted,
               name: '_PanelState.initialDateFormatted'))
       .value;
-  Computed<DateTime> _$initialDateStringToDateTimeComputed;
+  Computed<DateTime?>? _$initialDateStringToDateTimeComputed;
 
   @override
-  DateTime get initialDateStringToDateTime =>
-      (_$initialDateStringToDateTimeComputed ??= Computed<DateTime>(
+  DateTime? get initialDateStringToDateTime =>
+      (_$initialDateStringToDateTimeComputed ??= Computed<DateTime?>(
               () => super.initialDateStringToDateTime,
               name: '_PanelState.initialDateStringToDateTime'))
           .value;
-  Computed<List<DropdownMenuItem<int>>> _$ufMenuItemsComputed;
+  Computed<List<DropdownMenuItem<int>>>? _$ufMenuItemsComputed;
 
   @override
   List<DropdownMenuItem<int>> get ufMenuItems => (_$ufMenuItemsComputed ??=
           Computed<List<DropdownMenuItem<int>>>(() => super.ufMenuItems,
               name: '_PanelState.ufMenuItems'))
       .value;
-  Computed<List<DropdownMenuItem<int>>> _$cityMenuItemsComputed;
+  Computed<List<DropdownMenuItem<int>>>? _$cityMenuItemsComputed;
 
   @override
   List<DropdownMenuItem<int>> get cityMenuItems => (_$cityMenuItemsComputed ??=
           Computed<List<DropdownMenuItem<int>>>(() => super.cityMenuItems,
               name: '_PanelState.cityMenuItems'))
       .value;
-  Computed<int> _$dropdownUfValueComputed;
+  Computed<int?>? _$dropdownUfValueComputed;
 
   @override
-  int get dropdownUfValue =>
-      (_$dropdownUfValueComputed ??= Computed<int>(() => super.dropdownUfValue,
+  int? get dropdownUfValue =>
+      (_$dropdownUfValueComputed ??= Computed<int?>(() => super.dropdownUfValue,
               name: '_PanelState.dropdownUfValue'))
           .value;
-  Computed<String> _$selectedUfInitialsComputed;
+  Computed<String?>? _$selectedUfInitialsComputed;
 
   @override
-  String get selectedUfInitials => (_$selectedUfInitialsComputed ??=
-          Computed<String>(() => super.selectedUfInitials,
+  String? get selectedUfInitials => (_$selectedUfInitialsComputed ??=
+          Computed<String?>(() => super.selectedUfInitials,
               name: '_PanelState.selectedUfInitials'))
       .value;
-  Computed<int> _$dropdownCityValueComputed;
+  Computed<int?>? _$dropdownCityValueComputed;
 
   @override
-  int get dropdownCityValue => (_$dropdownCityValueComputed ??= Computed<int>(
+  int? get dropdownCityValue => (_$dropdownCityValueComputed ??= Computed<int?>(
           () => super.dropdownCityValue,
           name: '_PanelState.dropdownCityValue'))
       .value;
-  Computed<String> _$selectedCityNameComputed;
+  Computed<String?>? _$selectedCityNameComputed;
 
   @override
-  String get selectedCityName => (_$selectedCityNameComputed ??=
-          Computed<String>(() => super.selectedCityName,
+  String? get selectedCityName => (_$selectedCityNameComputed ??=
+          Computed<String?>(() => super.selectedCityName,
               name: '_PanelState.selectedCityName'))
       .value;
 
@@ -256,7 +256,7 @@ mixin _$PanelState on _PanelState, Store {
   final _$_PanelStateActionController = ActionController(name: '_PanelState');
 
   @override
-  void changeSelectedUf(int value) {
+  void changeSelectedUf(int? value) {
     final _$actionInfo = _$_PanelStateActionController.startAction(
         name: '_PanelState.changeSelectedUf');
     try {
@@ -267,7 +267,7 @@ mixin _$PanelState on _PanelState, Store {
   }
 
   @override
-  void changeSelectedCity(int value) {
+  void changeSelectedCity(int? value) {
     final _$actionInfo = _$_PanelStateActionController.startAction(
         name: '_PanelState.changeSelectedCity');
     try {

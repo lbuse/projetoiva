@@ -8,14 +8,14 @@ import '../../domain/entities/bulletin.dart';
 import '../stores/bulletins_state.dart';
 
 class CasesPage extends StatefulWidget {
-  final DateTime date;
-  final String state;
-  final String city;
-  final PlaceType placeType;
-  final DateTime submitTimeStamp;
+  final DateTime? date;
+  final String? state;
+  final String? city;
+  final PlaceType? placeType;
+  final DateTime? submitTimeStamp;
 
   const CasesPage({
-    Key key,
+    Key? key,
     this.date,
     this.state,
     this.city,
@@ -36,7 +36,7 @@ class _CasesPageState extends State<CasesPage> {
     ),
   );
   final List<ReactionDisposer> _disposers = [];
-  final List<charts.Series> seriesList = [];
+  final List<charts.Series<dynamic, num>> seriesList = [];
 
   @override
   void initState() {
@@ -44,7 +44,7 @@ class _CasesPageState extends State<CasesPage> {
     _disposers.addAll([
       reaction(
         (_) => bulletinsState.submitTimeStamp,
-        (_) {
+        (dynamic _) {
           print(widget.submitTimeStamp.toString());
           bulletinsState.loadBulletins();
         },
@@ -74,7 +74,7 @@ class _CasesPageState extends State<CasesPage> {
     return Container(
       width: 600,
       height: 600,
-      child: charts.LineChart(seriesList),
+      child: Container(), //charts.LineChart(seriesList),
     );
   }
 }

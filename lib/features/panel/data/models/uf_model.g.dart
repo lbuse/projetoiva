@@ -8,8 +8,8 @@ part of 'uf_model.dart';
 
 UfModel _$UfModelFromJson(Map<String, dynamic> json) {
   return UfModel(
-    id: json['id'] as int,
-    nome: json['nome'] as String,
-    sigla: json['sigla'] as String,
+    id: json['id'] as int?,
+    nome: json['nome'] as String?,
+    sigla: json['sigla'] as String?,
   );
 }

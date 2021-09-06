@@ -6,9 +6,7 @@ import '../entities/uf.dart';
 import '../repositories/uf_repository.dart';
 
 class GetUfs implements Usecase<List<Uf>, NoParams> {
-  GetUfs(
-    this.repository,
-  ) : assert(repository != null);
+  GetUfs(this.repository);
 
   final UfRepository repository;
 

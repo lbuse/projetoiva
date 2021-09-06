@@ -7,12 +7,12 @@ import '../../domain/repositories/vaccination_repository.dart';
 import '../datasources/vaccination_datasource.dart';
 
 class VaccinationRepositoryImpl implements VaccinationRepository {
-  VaccinationRepositoryImpl(this.dataSource) : assert(dataSource != null);
+  VaccinationRepositoryImpl(this.dataSource);
 
   final VaccinationDataSource dataSource;
 
   @override
-  Future<Either<Failure, List<Vaccination>>> findAll({String scrollId}) async {
+  Future<Either<Failure, List<Vaccination>>> findAll({String? scrollId}) async {
     try {
       return Right(await dataSource.findAll(scrollId: scrollId));
     } on ServerException catch (e) {

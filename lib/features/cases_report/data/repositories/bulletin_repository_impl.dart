@@ -11,18 +11,17 @@ class BulletinRepositoryImpl implements BulletinRepository {
 
   BulletinRepositoryImpl(
     BulletinDataSource dataSource,
-  )   : _dataSource = dataSource,
-        assert(dataSource != null);
+  ) : _dataSource = dataSource;
 
   @override
   Future<Either<Failure, List<Bulletin>>> findAll({
-    int page,
-    DateTime date,
-    PlaceType placeType,
-    bool isLast,
-    String state,
-    String city,
-    String cityIbgeCode,
+    int? page,
+    DateTime? date,
+    PlaceType? placeType,
+    bool? isLast,
+    String? state,
+    String? city,
+    String? cityIbgeCode,
   }) async {
     try {
       return Right(await _dataSource.findAll(
