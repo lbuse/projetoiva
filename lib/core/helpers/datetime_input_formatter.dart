@@ -10,10 +10,6 @@ class DateTimeInputFormatter extends TextInputFormatter {
     TextEditingValue oldValue,
     TextEditingValue newValue,
   ) {
-    // print(newValue.text.substring(newValue.text.length - 1));
-    // if (!RegExp(r'[0-9]').hasMatch(newValue.text.replaceAll('/', ''))) {
-    //   return oldValue;
-    // }
     var text = _format(newValue.text, '/');
     return newValue.copyWith(
         text: text, selection: _updateCursorPosition(text));
