@@ -29,6 +29,8 @@ abstract class _BulletinsState with Store {
   @observable
   String city = '';
   @observable
+  int cityIbgeCode = 0;
+  @observable
   PlaceType placeType = PlaceType.all;
   @observable
   ObservableList<BulletinDetails> bulletins = ObservableList();
@@ -65,6 +67,12 @@ abstract class _BulletinsState with Store {
   }
 
   @action
+  void changeCityIbgeCode(int? value) {
+    cityIbgeCode = value ?? 0;
+    changePlaceType(cityIbgeCode == 0 ? PlaceType.state : PlaceType.city);
+  }
+
+  @action
   void changePlaceType(PlaceType value) => placeType = value;
   @action
   void changeBulletinsList(List<BulletinDetails> list) =>
@@ -85,6 +93,7 @@ abstract class _BulletinsState with Store {
       placeType: placeType,
       state: state,
       city: city,
+      cityIbgeCode: cityIbgeCode == 0 ? null : cityIbgeCode,
     ));
 
     actual.fold(

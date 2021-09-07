@@ -11,6 +11,7 @@ class CasesPage extends StatefulWidget {
   final DateTime? date;
   final String? state;
   final String? city;
+  final int? cityIbgeCode;
   final PlaceType? placeType;
   final DateTime? submitTimeStamp;
 
@@ -19,6 +20,7 @@ class CasesPage extends StatefulWidget {
     this.date,
     this.state,
     this.city,
+    this.cityIbgeCode,
     this.placeType,
     this.submitTimeStamp,
   }) : super(key: key);
@@ -55,6 +57,7 @@ class _CasesPageState extends State<CasesPage> {
     bulletinsState.changeDate(widget.date);
     bulletinsState.changeState(widget.state);
     bulletinsState.changeCity(widget.city);
+    bulletinsState.changeCityIbgeCode(widget.cityIbgeCode);
     bulletinsState.changeSubmitTimeStamp(widget.submitTimeStamp);
   }
 

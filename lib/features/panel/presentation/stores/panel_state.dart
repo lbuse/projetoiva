@@ -58,7 +58,7 @@ abstract class _PanelState with Store {
 
   @computed
   bool get isInitialDateValid => initialDateStringToDateTime != null;
-  @computed
+  // @computed
   // bool get isFinalDateValid => finalDateStringToDateTime != null;
   @computed
   bool get isUfInputEnabled => !isLoadingUfs && !isLoadingCities;
@@ -127,7 +127,7 @@ abstract class _PanelState with Store {
           ))
       .toList();
   @computed
-  int? get dropdownUfValue => selectedUf <= 0 ? null : selectedUf;
+  int? get selectedUfValueOrNull => selectedUf <= 0 ? null : selectedUf;
   @computed
   String? get selectedUfInitials => ufs
       .firstWhere(
@@ -136,14 +136,14 @@ abstract class _PanelState with Store {
       )
       .sigla;
   @computed
-  int? get dropdownCityValue => selectedCity <= 0 ? null : selectedCity;
-  @computed
-  String? get selectedCityName => cities
-      .firstWhere(
-        (city) => selectedCity > 0 && city.id == selectedCity,
-        orElse: () => City(id: 0, nome: ''),
-      )
-      .nome;
+  int? get selectedCityValueOrNull => selectedCity <= 0 ? null : selectedCity;
+  // @computed
+  // String? get selectedCityName => cities
+  //     .firstWhere(
+  //       (city) => selectedCity > 0 && city.id == selectedCity,
+  //       orElse: () => City(id: 0, nome: ''),
+  //     )
+  //     .nome;
 
   @action
   void changeSelectedUf(int? value) {

@@ -42,7 +42,7 @@ class Params {
   final bool? isLast;
   final String? state;
   final String? city;
-  final String? cityIbgeCode;
+  final int? cityIbgeCode;
 
   Params({
     this.page,
@@ -61,7 +61,7 @@ class Params {
       isLast: isLast,
       state: state,
       city: city,
-      cityIbgeCode: cityIbgeCode,
+      cityIbgeCode: cityIbgeCode?.toString(),
     );
   }
 }

@@ -28,8 +28,6 @@ class _PanelPageState extends State<PanelPage> {
   @override
   void initState() {
     super.initState();
-    // setInitialDateValueViaController(panelState.initialDateFormatted);
-    // setFinalDateValueViaController(panelState.finalDateFormatted);
     panelState.loadUfs();
   }
 
@@ -87,7 +85,7 @@ class _PanelPageState extends State<PanelPage> {
                           builder: (_) => CasesPage(
                             date: panelState.initialDateStringToDateTime,
                             state: panelState.selectedUfInitials,
-                            city: panelState.selectedCityName,
+                            cityIbgeCode: panelState.selectedCityValueOrNull,
                             submitTimeStamp: panelState.submitTimeStamp,
                           ),
                         ),
@@ -149,7 +147,7 @@ class _PanelPageState extends State<PanelPage> {
             child: Observer(
               builder: (_) => _buildDropdownFilter<int>(
                 items: panelState.ufMenuItems,
-                value: panelState.dropdownUfValue,
+                value: panelState.selectedUfValueOrNull,
                 onChanged: panelState.isUfInputEnabled
                     ? panelState.changeSelectedUf
                     : null,
@@ -164,7 +162,7 @@ class _PanelPageState extends State<PanelPage> {
             child: Observer(
               builder: (_) => _buildDropdownFilter<int>(
                 items: panelState.cityMenuItems,
-                value: panelState.dropdownCityValue,
+                value: panelState.selectedCityValueOrNull,
                 onChanged: panelState.isCitiesInputEnabled
                     ? panelState.changeSelectedCity
                     : null,

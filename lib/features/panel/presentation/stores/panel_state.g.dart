@@ -59,13 +59,13 @@ mixin _$PanelState on _PanelState, Store {
           Computed<List<DropdownMenuItem<int>>>(() => super.cityMenuItems,
               name: '_PanelState.cityMenuItems'))
       .value;
-  Computed<int?>? _$dropdownUfValueComputed;
+  Computed<int?>? _$selectedUfValueOrNullComputed;
 
   @override
-  int? get dropdownUfValue =>
-      (_$dropdownUfValueComputed ??= Computed<int?>(() => super.dropdownUfValue,
-              name: '_PanelState.dropdownUfValue'))
-          .value;
+  int? get selectedUfValueOrNull => (_$selectedUfValueOrNullComputed ??=
+          Computed<int?>(() => super.selectedUfValueOrNull,
+              name: '_PanelState.selectedUfValueOrNull'))
+      .value;
   Computed<String?>? _$selectedUfInitialsComputed;
 
   @override
@@ -73,19 +73,12 @@ mixin _$PanelState on _PanelState, Store {
           Computed<String?>(() => super.selectedUfInitials,
               name: '_PanelState.selectedUfInitials'))
       .value;
-  Computed<int?>? _$dropdownCityValueComputed;
+  Computed<int?>? _$selectedCityValueOrNullComputed;
 
   @override
-  int? get dropdownCityValue => (_$dropdownCityValueComputed ??= Computed<int?>(
-          () => super.dropdownCityValue,
-          name: '_PanelState.dropdownCityValue'))
-      .value;
-  Computed<String?>? _$selectedCityNameComputed;
-
-  @override
-  String? get selectedCityName => (_$selectedCityNameComputed ??=
-          Computed<String?>(() => super.selectedCityName,
-              name: '_PanelState.selectedCityName'))
+  int? get selectedCityValueOrNull => (_$selectedCityValueOrNullComputed ??=
+          Computed<int?>(() => super.selectedCityValueOrNull,
+              name: '_PanelState.selectedCityValueOrNull'))
       .value;
 
   final _$selectedUfAtom = Atom(name: '_PanelState.selectedUf');
@@ -397,10 +390,9 @@ initialDateFormatted: ${initialDateFormatted},
 initialDateStringToDateTime: ${initialDateStringToDateTime},
 ufMenuItems: ${ufMenuItems},
 cityMenuItems: ${cityMenuItems},
-dropdownUfValue: ${dropdownUfValue},
+selectedUfValueOrNull: ${selectedUfValueOrNull},
 selectedUfInitials: ${selectedUfInitials},
-dropdownCityValue: ${dropdownCityValue},
-selectedCityName: ${selectedCityName}
+selectedCityValueOrNull: ${selectedCityValueOrNull}
     ''';
   }
 }

@@ -69,6 +69,21 @@ mixin _$BulletinsState on _BulletinsState, Store {
     });
   }
 
+  final _$cityIbgeCodeAtom = Atom(name: '_BulletinsState.cityIbgeCode');
+
+  @override
+  int get cityIbgeCode {
+    _$cityIbgeCodeAtom.reportRead();
+    return super.cityIbgeCode;
+  }
+
+  @override
+  set cityIbgeCode(int value) {
+    _$cityIbgeCodeAtom.reportWrite(value, super.cityIbgeCode, () {
+      super.cityIbgeCode = value;
+    });
+  }
+
   final _$placeTypeAtom = Atom(name: '_BulletinsState.placeType');
 
   @override
@@ -192,6 +207,17 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
+  void changeCityIbgeCode(int? value) {
+    final _$actionInfo = _$_BulletinsStateActionController.startAction(
+        name: '_BulletinsState.changeCityIbgeCode');
+    try {
+      return super.changeCityIbgeCode(value);
+    } finally {
+      _$_BulletinsStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void changePlaceType(PlaceType value) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.changePlaceType');
@@ -253,6 +279,7 @@ page: ${page},
 date: ${date},
 state: ${state},
 city: ${city},
+cityIbgeCode: ${cityIbgeCode},
 placeType: ${placeType},
 bulletins: ${bulletins},
 isLoading: ${isLoading},
