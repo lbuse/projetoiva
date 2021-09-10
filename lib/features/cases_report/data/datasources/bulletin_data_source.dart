@@ -50,10 +50,6 @@ class BulletinDataSourceImpl implements BulletinDataSource {
     final dateString = Bulletin.dateTimeToStringOrEmptyOrEmpty(bulletin.date);
     final String pageString = Formatters.valueToStringOrEmpty(page);
 
-    print(
-      'https://api.brasil.io/v1/dataset/covid19/caso/data/?page=$pageString&date=$dateString&state=${bulletin.stateToStringOrEmpty}&city=${bulletin.cityToStringOrEmpty}&place_type=$placeTypeString&is_last=${bulletin.isLastToStringOrEmpty}&city_ibge_code=${bulletin.cityIbgeCodeToStringOrEmpty}',
-    );
-
     final response = await _httpClient.get(
       Uri.parse(
         'https://api.brasil.io/v1/dataset/covid19/caso/data/?page=$pageString&date=$dateString&state=${bulletin.stateToStringOrEmpty}&city=${bulletin.cityToStringOrEmpty}&place_type=$placeTypeString&is_last=${bulletin.isLastToStringOrEmpty}&city_ibge_code=${bulletin.cityIbgeCodeToStringOrEmpty}',
