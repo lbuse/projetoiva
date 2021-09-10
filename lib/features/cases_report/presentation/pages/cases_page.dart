@@ -158,7 +158,7 @@ class _CasesPageState extends State<CasesPage> {
       Flexible(
         child: Observer(
           builder: (_) => _buildSfCartesianChart(
-            title: 'Casos confirmados',
+            title: 'Casos Acumulados',
             lineSeriesName: 'Casos',
             bulletins: bulletinsState.bulletinsByDate,
             metricType: MetricType.cases,
@@ -169,8 +169,8 @@ class _CasesPageState extends State<CasesPage> {
       Flexible(
         child: Observer(
           builder: (_) => _buildSfCartesianChart(
-            title: 'Mortes',
-            lineSeriesName: 'Mortes',
+            title: 'Óbitos Acumulados',
+            lineSeriesName: 'Óbitos',
             bulletins: bulletinsState.bulletinsByDate,
             metricType: MetricType.deaths,
           ),
