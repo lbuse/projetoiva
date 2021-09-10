@@ -9,6 +9,69 @@ part of 'bulletins_state.dart';
 // ignore_for_file: non_constant_identifier_names, unnecessary_brace_in_string_interps, unnecessary_lambdas, prefer_expression_function_bodies, lines_longer_than_80_chars, avoid_as, avoid_annotating_with_dynamic
 
 mixin _$BulletinsState on _BulletinsState, Store {
+  Computed<DateTime?>? _$dateComputed;
+
+  @override
+  DateTime? get date => (_$dateComputed ??=
+          Computed<DateTime?>(() => super.date, name: '_BulletinsState.date'))
+      .value;
+  Computed<String>? _$stateComputed;
+
+  @override
+  String get state => (_$stateComputed ??=
+          Computed<String>(() => super.state, name: '_BulletinsState.state'))
+      .value;
+  Computed<String>? _$cityComputed;
+
+  @override
+  String get city => (_$cityComputed ??=
+          Computed<String>(() => super.city, name: '_BulletinsState.city'))
+      .value;
+  Computed<String>? _$cityIbgeCodeComputed;
+
+  @override
+  String get cityIbgeCode =>
+      (_$cityIbgeCodeComputed ??= Computed<String>(() => super.cityIbgeCode,
+              name: '_BulletinsState.cityIbgeCode'))
+          .value;
+  Computed<PlaceType>? _$placeTypeComputed;
+
+  @override
+  PlaceType get placeType =>
+      (_$placeTypeComputed ??= Computed<PlaceType>(() => super.placeType,
+              name: '_BulletinsState.placeType'))
+          .value;
+  Computed<bool>? _$hasBulletinsComputed;
+
+  @override
+  bool get hasBulletins =>
+      (_$hasBulletinsComputed ??= Computed<bool>(() => super.hasBulletins,
+              name: '_BulletinsState.hasBulletins'))
+          .value;
+  Computed<bool>? _$nothingFoundComputed;
+
+  @override
+  bool get nothingFound =>
+      (_$nothingFoundComputed ??= Computed<bool>(() => super.nothingFound,
+              name: '_BulletinsState.nothingFound'))
+          .value;
+  Computed<bool>? _$isLoadMoreBulletinsEnabledComputed;
+
+  @override
+  bool get isLoadMoreBulletinsEnabled =>
+      (_$isLoadMoreBulletinsEnabledComputed ??= Computed<bool>(
+              () => super.isLoadMoreBulletinsEnabled,
+              name: '_BulletinsState.isLoadMoreBulletinsEnabled'))
+          .value;
+  Computed<ObservableList<BulletinDetails>>? _$bulletinsByDateComputed;
+
+  @override
+  ObservableList<BulletinDetails> get bulletinsByDate =>
+      (_$bulletinsByDateComputed ??= Computed<ObservableList<BulletinDetails>>(
+              () => super.bulletinsByDate,
+              name: '_BulletinsState.bulletinsByDate'))
+          .value;
+
   final _$pageAtom = Atom(name: '_BulletinsState.page');
 
   @override
@@ -21,81 +84,6 @@ mixin _$BulletinsState on _BulletinsState, Store {
   set page(int value) {
     _$pageAtom.reportWrite(value, super.page, () {
       super.page = value;
-    });
-  }
-
-  final _$dateAtom = Atom(name: '_BulletinsState.date');
-
-  @override
-  DateTime? get date {
-    _$dateAtom.reportRead();
-    return super.date;
-  }
-
-  @override
-  set date(DateTime? value) {
-    _$dateAtom.reportWrite(value, super.date, () {
-      super.date = value;
-    });
-  }
-
-  final _$stateAtom = Atom(name: '_BulletinsState.state');
-
-  @override
-  String get state {
-    _$stateAtom.reportRead();
-    return super.state;
-  }
-
-  @override
-  set state(String value) {
-    _$stateAtom.reportWrite(value, super.state, () {
-      super.state = value;
-    });
-  }
-
-  final _$cityAtom = Atom(name: '_BulletinsState.city');
-
-  @override
-  String get city {
-    _$cityAtom.reportRead();
-    return super.city;
-  }
-
-  @override
-  set city(String value) {
-    _$cityAtom.reportWrite(value, super.city, () {
-      super.city = value;
-    });
-  }
-
-  final _$cityIbgeCodeAtom = Atom(name: '_BulletinsState.cityIbgeCode');
-
-  @override
-  int get cityIbgeCode {
-    _$cityIbgeCodeAtom.reportRead();
-    return super.cityIbgeCode;
-  }
-
-  @override
-  set cityIbgeCode(int value) {
-    _$cityIbgeCodeAtom.reportWrite(value, super.cityIbgeCode, () {
-      super.cityIbgeCode = value;
-    });
-  }
-
-  final _$placeTypeAtom = Atom(name: '_BulletinsState.placeType');
-
-  @override
-  PlaceType get placeType {
-    _$placeTypeAtom.reportRead();
-    return super.placeType;
-  }
-
-  @override
-  set placeType(PlaceType value) {
-    _$placeTypeAtom.reportWrite(value, super.placeType, () {
-      super.placeType = value;
     });
   }
 
@@ -129,33 +117,35 @@ mixin _$BulletinsState on _BulletinsState, Store {
     });
   }
 
-  final _$errorMessageAtom = Atom(name: '_BulletinsState.errorMessage');
+  final _$allBulletinsAreLoadedAtom =
+      Atom(name: '_BulletinsState.allBulletinsAreLoaded');
 
   @override
-  String get errorMessage {
-    _$errorMessageAtom.reportRead();
-    return super.errorMessage;
+  bool get allBulletinsAreLoaded {
+    _$allBulletinsAreLoadedAtom.reportRead();
+    return super.allBulletinsAreLoaded;
   }
 
   @override
-  set errorMessage(String value) {
-    _$errorMessageAtom.reportWrite(value, super.errorMessage, () {
-      super.errorMessage = value;
+  set allBulletinsAreLoaded(bool value) {
+    _$allBulletinsAreLoadedAtom.reportWrite(value, super.allBulletinsAreLoaded,
+        () {
+      super.allBulletinsAreLoaded = value;
     });
   }
 
-  final _$submitTimeStampAtom = Atom(name: '_BulletinsState.submitTimeStamp');
+  final _$isFirstLoadingAtom = Atom(name: '_BulletinsState.isFirstLoading');
 
   @override
-  DateTime? get submitTimeStamp {
-    _$submitTimeStampAtom.reportRead();
-    return super.submitTimeStamp;
+  bool get isFirstLoading {
+    _$isFirstLoadingAtom.reportRead();
+    return super.isFirstLoading;
   }
 
   @override
-  set submitTimeStamp(DateTime? value) {
-    _$submitTimeStampAtom.reportWrite(value, super.submitTimeStamp, () {
-      super.submitTimeStamp = value;
+  set isFirstLoading(bool value) {
+    _$isFirstLoadingAtom.reportWrite(value, super.isFirstLoading, () {
+      super.isFirstLoading = value;
     });
   }
 
@@ -174,66 +164,22 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void changeDate(DateTime? value) {
+  void changeBulletins(List<BulletinDetails> list) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
-        name: '_BulletinsState.changeDate');
+        name: '_BulletinsState.changeBulletins');
     try {
-      return super.changeDate(value);
+      return super.changeBulletins(list);
     } finally {
       _$_BulletinsStateActionController.endAction(_$actionInfo);
     }
   }
 
   @override
-  void changeState(String? value) {
+  void addBulletins(List<BulletinDetails> list) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
-        name: '_BulletinsState.changeState');
+        name: '_BulletinsState.addBulletins');
     try {
-      return super.changeState(value);
-    } finally {
-      _$_BulletinsStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void changeCity(String? value) {
-    final _$actionInfo = _$_BulletinsStateActionController.startAction(
-        name: '_BulletinsState.changeCity');
-    try {
-      return super.changeCity(value);
-    } finally {
-      _$_BulletinsStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void changeCityIbgeCode(int? value) {
-    final _$actionInfo = _$_BulletinsStateActionController.startAction(
-        name: '_BulletinsState.changeCityIbgeCode');
-    try {
-      return super.changeCityIbgeCode(value);
-    } finally {
-      _$_BulletinsStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void changePlaceType(PlaceType value) {
-    final _$actionInfo = _$_BulletinsStateActionController.startAction(
-        name: '_BulletinsState.changePlaceType');
-    try {
-      return super.changePlaceType(value);
-    } finally {
-      _$_BulletinsStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
-  void changeBulletinsList(List<BulletinDetails> list) {
-    final _$actionInfo = _$_BulletinsStateActionController.startAction(
-        name: '_BulletinsState.changeBulletinsList');
-    try {
-      return super.changeBulletinsList(list);
+      return super.addBulletins(list);
     } finally {
       _$_BulletinsStateActionController.endAction(_$actionInfo);
     }
@@ -251,6 +197,17 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
+  void changeAllBulletinsAreLoaded(bool value) {
+    final _$actionInfo = _$_BulletinsStateActionController.startAction(
+        name: '_BulletinsState.changeAllBulletinsAreLoaded');
+    try {
+      return super.changeAllBulletinsAreLoaded(value);
+    } finally {
+      _$_BulletinsStateActionController.endAction(_$actionInfo);
+    }
+  }
+
+  @override
   void changeErrorMessage(String value) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.changeErrorMessage');
@@ -262,11 +219,11 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void changeSubmitTimeStamp(DateTime? value) {
+  void changeIsFirstLoading(bool value) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
-        name: '_BulletinsState.changeSubmitTimeStamp');
+        name: '_BulletinsState.changeIsFirstLoading');
     try {
-      return super.changeSubmitTimeStamp(value);
+      return super.changeIsFirstLoading(value);
     } finally {
       _$_BulletinsStateActionController.endAction(_$actionInfo);
     }
@@ -276,15 +233,19 @@ mixin _$BulletinsState on _BulletinsState, Store {
   String toString() {
     return '''
 page: ${page},
+bulletins: ${bulletins},
+isLoading: ${isLoading},
+allBulletinsAreLoaded: ${allBulletinsAreLoaded},
+isFirstLoading: ${isFirstLoading},
 date: ${date},
 state: ${state},
 city: ${city},
 cityIbgeCode: ${cityIbgeCode},
 placeType: ${placeType},
-bulletins: ${bulletins},
-isLoading: ${isLoading},
-errorMessage: ${errorMessage},
-submitTimeStamp: ${submitTimeStamp}
+hasBulletins: ${hasBulletins},
+nothingFound: ${nothingFound},
+isLoadMoreBulletinsEnabled: ${isLoadMoreBulletinsEnabled},
+bulletinsByDate: ${bulletinsByDate}
     ''';
   }
 }

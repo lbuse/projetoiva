@@ -1,30 +1,23 @@
-import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
-import '../../domain/entities/bulletin.dart';
+import 'package:projetoiva/features/panel/presentation/stores/panel_state.dart';
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../data/datasources/bulletin_data_source.dart';
 import '../../data/repositories/bulletin_repository_impl.dart';
+import '../../domain/entities/bulletin_details.dart';
 import '../stores/bulletins_state.dart';
 
+enum MetricType {
+  cases,
+  deaths,
+}
+
 class CasesPage extends StatefulWidget {
-  final DateTime? date;
-  final String? state;
-  final String? city;
-  final int? cityIbgeCode;
-  final PlaceType? placeType;
-  final DateTime? submitTimeStamp;
-
-  const CasesPage({
-    Key? key,
-    this.date,
-    this.state,
-    this.city,
-    this.cityIbgeCode,
-    this.placeType,
-    this.submitTimeStamp,
-  }) : super(key: key);
-
   @override
   _CasesPageState createState() => _CasesPageState();
 }
@@ -38,27 +31,25 @@ class _CasesPageState extends State<CasesPage> {
     ),
   );
   final List<ReactionDisposer> _disposers = [];
-  final List<charts.Series<dynamic, num>> seriesList = [];
 
   @override
   void initState() {
     super.initState();
     _disposers.addAll([
       reaction(
-        (_) => bulletinsState.submitTimeStamp,
+        (_) => GetIt.instance<PanelState>().selectedUf,
+        (_) => bulletinsState.loadBulletins(),
+      ),
+      reaction(
+        (_) => GetIt.instance<PanelState>().selectedCityValueOrNull,
+        (_) => bulletinsState.loadBulletins(),
+      ),
+      reaction(
+        (_) => GetIt.instance<PanelState>().selectedCityName,
         (_) => bulletinsState.loadBulletins(),
       ),
     ]);
-  }
-
-  @override
-  void didUpdateWidget(oldWidget) {
-    super.didUpdateWidget(oldWidget);
-    bulletinsState.changeDate(widget.date);
-    bulletinsState.changeState(widget.state);
-    bulletinsState.changeCity(widget.city);
-    bulletinsState.changeCityIbgeCode(widget.cityIbgeCode);
-    bulletinsState.changeSubmitTimeStamp(widget.submitTimeStamp);
+    bulletinsState.loadBulletins();
   }
 
   @override
@@ -71,10 +62,171 @@ class _CasesPageState extends State<CasesPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 600,
-      height: 600,
-      child: Container(), //charts.LineChart(seriesList),
+    return LayoutBuilder(
+      builder: (_, constraints) => Stack(
+        children: [
+          Positioned(
+            left: 0.0,
+            top: 0.0,
+            right: 0.0,
+            child: AnimatedSwitcher(
+              duration: kThemeAnimationDuration,
+              child: Observer(
+                builder: (_) => bulletinsState.isLoading
+                    ? const ClipRRect(
+                        borderRadius: BorderRadius.all(Radius.circular(50)),
+                        child: LinearProgressIndicator(),
+                      )
+                    : const SizedBox.shrink(),
+              ),
+            ),
+          ),
+          Positioned(
+            left: 16.0,
+            top: 8.0,
+            right: 16.0,
+            bottom: 16.0,
+            child: Observer(
+              builder: (_) => bulletinsState.nothingFound
+                  ? Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          '(˚Δ˚)b',
+                          style:
+                              Theme.of(context).textTheme.headline1?.copyWith(
+                                    fontFamily: 'Roboto',
+                                    fontSize: 156,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                        ),
+                        const SizedBox(height: 56),
+                        Text(
+                          '''Nenhum dado entrontrado ${bulletinsState.state.isNotEmpty ? 'para ' + bulletinsState.state : ''} ${bulletinsState.city.isNotEmpty ? 'e ' + bulletinsState.city : ''}''',
+                          style: Theme.of(context).textTheme.headline4,
+                        )
+                      ],
+                    )
+                  : SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Observer(
+                            builder: (_) => bulletinsState.hasBulletins
+                                ? Row(
+                                    mainAxisAlignment: MainAxisAlignment.end,
+                                    children: [
+                                      ElevatedButton(
+                                        child: Text(
+                                          bulletinsState.allBulletinsAreLoaded
+                                              ? 'Todos os dados foram carregados'
+                                              : 'Carregar mais dados',
+                                        ),
+                                        onPressed: bulletinsState
+                                                .isLoadMoreBulletinsEnabled
+                                            ? () =>
+                                                bulletinsState.loadBulletins(
+                                                  page: bulletinsState.page + 1,
+                                                )
+                                            : null,
+                                      ),
+                                    ],
+                                  )
+                                : const SizedBox.shrink(),
+                          ),
+                          const SizedBox(height: 8.0),
+                          constraints.maxWidth > 860
+                              ? Row(
+                                  children: _buildCasesIndicators(),
+                                )
+                              : Column(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: _buildCasesIndicators(),
+                                ),
+                        ],
+                      ),
+                    ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  List<Widget> _buildCasesIndicators() {
+    return [
+      Flexible(
+        child: Observer(
+          builder: (_) => _buildSfCartesianChart(
+            title: 'Casos confirmados',
+            lineSeriesName: 'Casos',
+            bulletins: bulletinsState.bulletinsByDate,
+            metricType: MetricType.cases,
+          ),
+        ),
+      ),
+      const SizedBox(width: 8.0, height: 8.0),
+      Flexible(
+        child: Observer(
+          builder: (_) => _buildSfCartesianChart(
+            title: 'Mortes',
+            lineSeriesName: 'Mortes',
+            bulletins: bulletinsState.bulletinsByDate,
+            metricType: MetricType.deaths,
+          ),
+        ),
+      ),
+    ];
+  }
+
+  Widget _buildSfCartesianChart({
+    required String title,
+    String? yAxisTitle,
+    String? xAxisTitle,
+    required List<BulletinDetails> bulletins,
+    String? lineSeriesName,
+    required MetricType metricType,
+    double? width,
+    double? height: 400,
+  }) {
+    return AnimatedSwitcher(
+      duration: kThemeAnimationDuration,
+      child: bulletins.isEmpty
+          ? const SizedBox.shrink()
+          : Card(
+              child: Container(
+                width: width,
+                height: height,
+                padding: const EdgeInsets.all(16.0),
+                child: SfCartesianChart(
+                  title: ChartTitle(
+                    text: title,
+                  ),
+                  tooltipBehavior: TooltipBehavior(enable: true),
+                  primaryYAxis: NumericAxis(
+                    title: AxisTitle(text: yAxisTitle),
+                  ),
+                  primaryXAxis: DateTimeCategoryAxis(
+                    title: AxisTitle(text: xAxisTitle),
+                    dateFormat: DateFormat(null, 'pt').add_MMMd(),
+                  ),
+                  series: <ChartSeries<BulletinDetails, dynamic>>[
+                    FastLineSeries<BulletinDetails, dynamic>(
+                        dataSource: bulletins,
+                        xValueMapper: (bulletins, _) => bulletins.date,
+                        yValueMapper: (bulletins, _) {
+                          switch (metricType) {
+                            case MetricType.deaths:
+                              return bulletins.deaths;
+                            default:
+                              return bulletins.confirmed;
+                          }
+                        },
+                        name: lineSeriesName),
+                  ],
+                ),
+              ),
+            ),
     );
   }
 }

@@ -66,11 +66,11 @@ mixin _$PanelState on _PanelState, Store {
           Computed<int?>(() => super.selectedUfValueOrNull,
               name: '_PanelState.selectedUfValueOrNull'))
       .value;
-  Computed<String?>? _$selectedUfInitialsComputed;
+  Computed<String>? _$selectedUfInitialsComputed;
 
   @override
-  String? get selectedUfInitials => (_$selectedUfInitialsComputed ??=
-          Computed<String?>(() => super.selectedUfInitials,
+  String get selectedUfInitials => (_$selectedUfInitialsComputed ??=
+          Computed<String>(() => super.selectedUfInitials,
               name: '_PanelState.selectedUfInitials'))
       .value;
   Computed<int?>? _$selectedCityValueOrNullComputed;
@@ -79,6 +79,13 @@ mixin _$PanelState on _PanelState, Store {
   int? get selectedCityValueOrNull => (_$selectedCityValueOrNullComputed ??=
           Computed<int?>(() => super.selectedCityValueOrNull,
               name: '_PanelState.selectedCityValueOrNull'))
+      .value;
+  Computed<String>? _$selectedCityNameComputed;
+
+  @override
+  String get selectedCityName => (_$selectedCityNameComputed ??=
+          Computed<String>(() => super.selectedCityName,
+              name: '_PanelState.selectedCityName'))
       .value;
 
   final _$selectedUfAtom = Atom(name: '_PanelState.selectedUf');
@@ -216,21 +223,6 @@ mixin _$PanelState on _PanelState, Store {
     });
   }
 
-  final _$submitTimeStampAtom = Atom(name: '_PanelState.submitTimeStamp');
-
-  @override
-  DateTime get submitTimeStamp {
-    _$submitTimeStampAtom.reportRead();
-    return super.submitTimeStamp;
-  }
-
-  @override
-  set submitTimeStamp(DateTime value) {
-    _$submitTimeStampAtom.reportWrite(value, super.submitTimeStamp, () {
-      super.submitTimeStamp = value;
-    });
-  }
-
   final _$errorMessageAtom = Atom(name: '_PanelState.errorMessage');
 
   @override
@@ -348,17 +340,6 @@ mixin _$PanelState on _PanelState, Store {
   }
 
   @override
-  void changeSubmitTimeStamp(DateTime value) {
-    final _$actionInfo = _$_PanelStateActionController.startAction(
-        name: '_PanelState.changeSubmitTimeStamp');
-    try {
-      return super.changeSubmitTimeStamp(value);
-    } finally {
-      _$_PanelStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void changeErrorMessage(String value) {
     final _$actionInfo = _$_PanelStateActionController.startAction(
         name: '_PanelState.changeErrorMessage');
@@ -381,7 +362,6 @@ isLoadingUfs: ${isLoadingUfs},
 isLoadingCities: ${isLoadingCities},
 isLoading: ${isLoading},
 isformSubmitted: ${isformSubmitted},
-submitTimeStamp: ${submitTimeStamp},
 errorMessage: ${errorMessage},
 isInitialDateValid: ${isInitialDateValid},
 isUfInputEnabled: ${isUfInputEnabled},
@@ -392,7 +372,8 @@ ufMenuItems: ${ufMenuItems},
 cityMenuItems: ${cityMenuItems},
 selectedUfValueOrNull: ${selectedUfValueOrNull},
 selectedUfInitials: ${selectedUfInitials},
-selectedCityValueOrNull: ${selectedCityValueOrNull}
+selectedCityValueOrNull: ${selectedCityValueOrNull},
+selectedCityName: ${selectedCityName}
     ''';
   }
 }

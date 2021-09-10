@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
+import 'package:get_it/get_it.dart';
+import 'package:mobx/mobx.dart';
+import 'package:projetoiva/core/widgets/feedback_snackbar.dart';
 
-import '../../../../core/widgets/date_picker.dart';
 import '../../../cases_report/presentation/pages/cases_page.dart';
 import '../../data/datasources/city_datasource.dart';
 import '../../data/datasources/uf_datasource.dart';
@@ -17,10 +19,12 @@ class PanelPage extends StatefulWidget {
 }
 
 class _PanelPageState extends State<PanelPage> {
+  final getIt = GetIt.instance;
   final panelState = PanelState(
     ufRepository: UfRepositoryImpl(UfDataSourceImpl()),
     cityRepository: CityRepositoryImpl(CityDataSourceImpl()),
   );
+  final List<ReactionDisposer> _disposers = [];
   final formKey = GlobalKey<FormState>();
   final initialDateController = TextEditingController();
   final finalDateController = TextEditingController();
@@ -28,6 +32,22 @@ class _PanelPageState extends State<PanelPage> {
   @override
   void initState() {
     super.initState();
+    getIt.registerSingleton<PanelState>(panelState);
+    _disposers.addAll([
+      reaction<String>(
+        (_) => panelState.errorMessage,
+        (message) {
+          if (message.isNotEmpty) {
+            FeedbackSnackbar.show(
+              context: context,
+              message: message,
+              type: SnackbarType.error,
+              onClosedReaction: () => panelState.changeErrorMessage(''),
+            );
+          }
+        },
+      ),
+    ]);
     panelState.loadUfs();
   }
 
@@ -35,6 +55,7 @@ class _PanelPageState extends State<PanelPage> {
   void dispose() {
     initialDateController.dispose();
     finalDateController.dispose();
+    getIt.unregister<PanelState>();
     super.dispose();
   }
 
@@ -42,60 +63,65 @@ class _PanelPageState extends State<PanelPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.only(left: 16.0, top: 16.0, right: 16.0),
-          child: Stack(
-            children: [
-              Positioned(
-                left: 0.0,
-                top: 0.0,
-                right: 0.0,
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Row(
+        child: Stack(
+          children: [
+            Positioned(
+              left: 0.0,
+              top: 0.0,
+              right: 0.0,
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 16.0,
+                      top: 16.0,
+                      right: 16.0,
+                      bottom: 8.0,
+                    ),
+                    child: Row(
                       mainAxisSize: MainAxisSize.min,
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Covid Search',
-                            style: Theme.of(context).textTheme.headline5,
+                        Expanded(
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(text: 'C'),
+                                WidgetSpan(
+                                  child: Image.asset(
+                                    'assets/images/ic_covid.png',
+                                    width: 32,
+                                    height: 32,
+                                  ),
+                                ),
+                                TextSpan(text: 'vid Search')
+                              ],
+                              style: Theme.of(context)
+                                  .textTheme
+                                  .headline5
+                                  ?.copyWith(fontWeight: FontWeight.bold),
+                            ),
                           ),
                         ),
-                        Expanded(child: _buildSearchForm()),
-                      ],
-                    ),
-                  ],
-                ),
-              ),
-              Positioned(
-                left: 0.0,
-                top: 66.0,
-                right: 0.0,
-                bottom: 0.0,
-                child: SingleChildScrollView(
-                  child: Container(
-                    color: Colors.grey,
-                    child: Column(
-                      children: [
-                        Observer(
-                          builder: (_) => CasesPage(
-                            date: panelState.initialDateStringToDateTime,
-                            state: panelState.selectedUfInitials,
-                            cityIbgeCode: panelState.selectedCityValueOrNull,
-                            submitTimeStamp: panelState.submitTimeStamp,
-                          ),
+                        Expanded(
+                          child: _buildSearchForm(),
                         ),
                       ],
                     ),
                   ),
-                ),
+                ],
               ),
-            ],
-          ),
+            ),
+            Positioned(
+              left: 0.0,
+              top: 72.0,
+              right: 0.0,
+              bottom: 0.0,
+              child: CasesPage(),
+            ),
+          ],
         ),
       ),
     );
@@ -108,21 +134,21 @@ class _PanelPageState extends State<PanelPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 180,
-            child: Observer(
-              builder: (_) => DatePicker(
-                currentDate: panelState.initialDateStringToDateTime,
-                controller: initialDateController,
-                label: 'Data',
-                onChanged: panelState.changeInitialDate,
-                onSelected: (value) {
-                  panelState.changeInitialDate(value);
-                  setInitialDateValueViaController(value);
-                },
-              ),
-            ),
-          ),
+          // SizedBox(
+          //   width: 180,
+          //   child: Observer(
+          //     builder: (_) => DatePicker(
+          //       currentDate: panelState.initialDateStringToDateTime,
+          //       controller: initialDateController,
+          //       label: 'Data',
+          //       onChanged: panelState.changeInitialDate,
+          //       onSelected: (value) {
+          //         panelState.changeInitialDate(value);
+          //         setInitialDateValueViaController(value);
+          //       },
+          //     ),
+          //   ),
+          // ),
           // const SizedBox(width: 8.0),
           // SizedBox(
           //   width: 180,
@@ -148,6 +174,7 @@ class _PanelPageState extends State<PanelPage> {
               builder: (_) => _buildDropdownFilter<int>(
                 items: panelState.ufMenuItems,
                 value: panelState.selectedUfValueOrNull,
+                isEnabled: panelState.isUfInputEnabled,
                 onChanged: panelState.isUfInputEnabled
                     ? panelState.changeSelectedUf
                     : null,
@@ -163,6 +190,7 @@ class _PanelPageState extends State<PanelPage> {
               builder: (_) => _buildDropdownFilter<int>(
                 items: panelState.cityMenuItems,
                 value: panelState.selectedCityValueOrNull,
+                isEnabled: panelState.isCitiesInputEnabled,
                 onChanged: panelState.isCitiesInputEnabled
                     ? panelState.changeSelectedCity
                     : null,
@@ -172,15 +200,15 @@ class _PanelPageState extends State<PanelPage> {
               ),
             ),
           ),
-          const SizedBox(width: 8.0),
-          Flexible(
-            fit: FlexFit.loose,
-            child: IconButton(
-              icon: Icon(Icons.search_outlined),
-              padding: EdgeInsets.zero,
-              onPressed: () => panelState.changeSubmitTimeStamp(DateTime.now()),
-            ),
-          ),
+          // const SizedBox(width: 8.0),
+          // Flexible(
+          //   fit: FlexFit.loose,
+          //   child: IconButton(
+          //     icon: Icon(Icons.search_outlined),
+          //     padding: EdgeInsets.zero,
+          //     onPressed: () => panelState.changeSubmitTimeStamp(DateTime.now()),
+          //   ),
+          // ),
         ],
       ),
     );
@@ -189,6 +217,7 @@ class _PanelPageState extends State<PanelPage> {
   Column _buildDropdownFilter<T>({
     required List<DropdownMenuItem<T>>? items,
     T? value,
+    bool isEnabled = true,
     void Function(T?)? onChanged,
     required String labelText,
     bool isLoading = false,
@@ -199,29 +228,32 @@ class _PanelPageState extends State<PanelPage> {
         DropdownButtonFormField<T>(
           items: items,
           value: value,
-          onChanged: panelState.isCitiesInputEnabled ? onChanged : null,
+          onChanged: isEnabled ? onChanged : null,
           isExpanded: true,
           decoration: const InputDecoration()
               .applyDefaults(Theme.of(context).inputDecorationTheme)
               .copyWith(
                 border: const OutlineInputBorder(),
                 isDense: true,
-                labelText: isLoading ? 'Carregando...' : 'Cidade',
+                labelText: labelText,
               ),
         ),
-        isLoading
-            ? Container(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                height: 3.0,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(20),
-                    bottomRight: Radius.circular(20),
+        AnimatedSwitcher(
+          duration: kThemeAnimationDuration,
+          child: isLoading
+              ? Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  height: 3.0,
+                  child: const ClipRRect(
+                    borderRadius: BorderRadius.only(
+                      bottomLeft: Radius.circular(20),
+                      bottomRight: Radius.circular(20),
+                    ),
+                    child: LinearProgressIndicator(),
                   ),
-                  child: LinearProgressIndicator(),
-                ),
-              )
-            : const SizedBox(height: 3.0),
+                )
+              : const SizedBox(height: 3.0),
+        ),
       ],
     );
   }

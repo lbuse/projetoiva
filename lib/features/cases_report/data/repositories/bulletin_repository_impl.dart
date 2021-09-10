@@ -33,6 +33,10 @@ class BulletinRepositoryImpl implements BulletinRepository {
       return Left(GeneralFailure(
         message: e.message,
       ));
+    } on Exception {
+      return Left(GeneralFailure(
+        message: 'Erro desconhecido',
+      ));
     }
   }
 }

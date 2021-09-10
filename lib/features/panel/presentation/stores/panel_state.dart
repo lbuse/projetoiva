@@ -51,8 +51,8 @@ abstract class _PanelState with Store {
   bool isLoading = false;
   @observable
   bool isformSubmitted = false;
-  @observable
-  DateTime submitTimeStamp = DateTime.now();
+  // @observable
+  // DateTime submitTimeStamp = DateTime.now();
   @observable
   String errorMessage = '';
 
@@ -129,21 +129,25 @@ abstract class _PanelState with Store {
   @computed
   int? get selectedUfValueOrNull => selectedUf <= 0 ? null : selectedUf;
   @computed
-  String? get selectedUfInitials => ufs
-      .firstWhere(
-        (uf) => selectedUf > 0 && uf.id == selectedUf,
-        orElse: () => Uf(id: 0, nome: '', sigla: ''),
-      )
-      .sigla;
+  String get selectedUfInitials =>
+      ufs
+          .firstWhere(
+            (uf) => selectedUf > 0 && uf.id == selectedUf,
+            orElse: () => Uf(id: 0, nome: '', sigla: ''),
+          )
+          .sigla ??
+      '';
   @computed
   int? get selectedCityValueOrNull => selectedCity <= 0 ? null : selectedCity;
-  // @computed
-  // String? get selectedCityName => cities
-  //     .firstWhere(
-  //       (city) => selectedCity > 0 && city.id == selectedCity,
-  //       orElse: () => City(id: 0, nome: ''),
-  //     )
-  //     .nome;
+  @computed
+  String get selectedCityName =>
+      cities
+          .firstWhere(
+            (city) => selectedCity > 0 && city.id == selectedCity,
+            orElse: () => City(id: 0, nome: ''),
+          )
+          .nome ??
+      '';
 
   @action
   void changeSelectedUf(int? value) {
@@ -186,8 +190,8 @@ abstract class _PanelState with Store {
   void changeIsLoading(bool value) => isLoading = value;
   @action
   void changeIsFormSubmitted(bool value) => isformSubmitted = value;
-  @action
-  void changeSubmitTimeStamp(DateTime value) => submitTimeStamp = value;
+  // @action
+  // void changeSubmitTimeStamp(DateTime value) => submitTimeStamp = value;
   @action
   void changeErrorMessage(String value) => errorMessage = value;
 

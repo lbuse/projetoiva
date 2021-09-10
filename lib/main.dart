@@ -16,8 +16,8 @@ class App extends StatelessWidget {
       title: 'Covid Search',
       localizationsDelegates: [GlobalMaterialLocalizations.delegate],
       supportedLocales: [
-        const Locale('en'),
         const Locale('br'),
+        const Locale('en'),
       ],
       theme: ThemeData(
         primarySwatch: Colors.purple,

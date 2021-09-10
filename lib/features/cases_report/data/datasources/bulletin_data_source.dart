@@ -70,7 +70,7 @@ class BulletinDataSourceImpl implements BulletinDataSource {
             json.decode(utf8.decode(response.bodyBytes)),
           ).bulletins ??
           [];
-    } else if (response.statusCode == 400) {
+    } else if (response.statusCode == 404) {
       return [];
     } else {
       throw ServerException(
