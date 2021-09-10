@@ -101,7 +101,10 @@ class _PanelPageState extends State<PanelPage> {
                               style: Theme.of(context)
                                   .textTheme
                                   .headline5
-                                  ?.copyWith(fontWeight: FontWeight.bold),
+                                  ?.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.purple,
+                                  ),
                             ),
                           ),
                         ),
