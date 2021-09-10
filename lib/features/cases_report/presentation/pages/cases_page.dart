@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
-import 'package:get_it/get_it.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
-import 'package:projetoiva/features/panel/presentation/stores/panel_state.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../data/datasources/bulletin_data_source.dart';
@@ -37,15 +35,7 @@ class _CasesPageState extends State<CasesPage> {
     super.initState();
     _disposers.addAll([
       reaction(
-        (_) => GetIt.instance<PanelState>().selectedUf,
-        (_) => bulletinsState.loadBulletins(),
-      ),
-      reaction(
-        (_) => GetIt.instance<PanelState>().selectedCityValueOrNull,
-        (_) => bulletinsState.loadBulletins(),
-      ),
-      reaction(
-        (_) => GetIt.instance<PanelState>().selectedCityName,
+        (_) => bulletinsState.hasFiltersChanged,
         (_) => bulletinsState.loadBulletins(),
       ),
     ]);

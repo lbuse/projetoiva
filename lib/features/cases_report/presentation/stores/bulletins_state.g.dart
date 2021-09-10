@@ -63,6 +63,13 @@ mixin _$BulletinsState on _BulletinsState, Store {
               () => super.isLoadMoreBulletinsEnabled,
               name: '_BulletinsState.isLoadMoreBulletinsEnabled'))
           .value;
+  Computed<String>? _$hasFiltersChangedComputed;
+
+  @override
+  String get hasFiltersChanged => (_$hasFiltersChangedComputed ??=
+          Computed<String>(() => super.hasFiltersChanged,
+              name: '_BulletinsState.hasFiltersChanged'))
+      .value;
   Computed<ObservableList<BulletinDetails>>? _$bulletinsByDateComputed;
 
   @override
@@ -245,6 +252,7 @@ placeType: ${placeType},
 hasBulletins: ${hasBulletins},
 nothingFound: ${nothingFound},
 isLoadMoreBulletinsEnabled: ${isLoadMoreBulletinsEnabled},
+hasFiltersChanged: ${hasFiltersChanged},
 bulletinsByDate: ${bulletinsByDate}
     ''';
   }

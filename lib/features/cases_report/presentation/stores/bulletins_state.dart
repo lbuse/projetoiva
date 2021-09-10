@@ -52,6 +52,8 @@ abstract class _BulletinsState with Store {
   @computed
   bool get isLoadMoreBulletinsEnabled => !allBulletinsAreLoaded && !isLoading;
   @computed
+  String get hasFiltersChanged => state + city + cityIbgeCode;
+  @computed
   ObservableList<BulletinDetails> get bulletinsByDate {
     final ObservableList<BulletinDetails> listByDate = ObservableList.of([]);
     final tempList = bulletins.where(
