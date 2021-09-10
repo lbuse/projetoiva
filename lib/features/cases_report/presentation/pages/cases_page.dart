@@ -3,11 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
+import 'package:projetoiva/features/cases_report/domain/usecases/get_cases.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../data/datasources/bulletin_data_source.dart';
 import '../../data/repositories/bulletin_repository_impl.dart';
-import '../../domain/entities/bulletin_details.dart';
 import '../stores/bulletins_state.dart';
 
 enum MetricType {
@@ -173,7 +173,7 @@ class _CasesPageState extends State<CasesPage> {
     required String title,
     String? yAxisTitle,
     String? xAxisTitle,
-    required List<BulletinDetails> bulletins,
+    required List<BulletinReturned> bulletins,
     String? lineSeriesName,
     required MetricType metricType,
     double? width,
@@ -200,8 +200,8 @@ class _CasesPageState extends State<CasesPage> {
                     title: AxisTitle(text: xAxisTitle),
                     dateFormat: DateFormat(null, 'pt').add_MMMd(),
                   ),
-                  series: <ChartSeries<BulletinDetails, dynamic>>[
-                    FastLineSeries<BulletinDetails, dynamic>(
+                  series: <ChartSeries<BulletinReturned, dynamic>>[
+                    FastLineSeries<BulletinReturned, dynamic>(
                         dataSource: bulletins,
                         xValueMapper: (bulletins, _) => bulletins.date,
                         yValueMapper: (bulletins, _) {

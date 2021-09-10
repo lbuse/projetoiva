@@ -3,17 +3,16 @@ import 'package:dartz/dartz.dart';
 import '../../../../core/error/failures.dart';
 import '../../../../core/usecases/usecase.dart';
 import '../entities/bulletin.dart';
-import '../entities/bulletin_details.dart';
 import '../repositories/bulletin_repository.dart';
 
 /// Obtem casos e óbitos com opções de filtragem.
-class GetCases implements Usecase<List<BulletinDetails>, Params> {
+class GetCases implements Usecase<List<BulletinReturned>, Params> {
   GetCases(this.repository);
 
   final BulletinRepository repository;
 
   @override
-  Future<Either<Failure, List<BulletinDetails>>> call(Params params) async {
+  Future<Either<Failure, List<BulletinReturned>>> call(Params params) async {
     final response = await repository.findAll(
       bulletin: params.toBulletin(),
       page: params.page,
@@ -21,7 +20,30 @@ class GetCases implements Usecase<List<BulletinDetails>, Params> {
 
     return response.fold(
       (failure) => Left(failure),
-      (list) => Right(list),
+      (bulletins) {
+        final tempList = List.of(bulletins);
+        tempList.removeWhere((bulletin) => !bulletin.isValid);
+
+        final list = tempList
+            .map((b) => BulletinReturned(
+                  date: b.date,
+                  state: b.state,
+                  city: b.city,
+                  placeType: b.placeType,
+                  confirmed: b.confirmed,
+                  deaths: b.deaths,
+                  isLast: b.isLast,
+                  estimatedPopulation: b.estimatedPopulation,
+                  estimatedPopulation2019: b.estimatedPopulation2019,
+                  cityIbgeCode: b.cityIbgeCode,
+                  confirmedPer100kInhabitants: b.confirmedPer100kInhabitants,
+                  deathRate: b.deathRate,
+                  orderForPlace: b.orderForPlace,
+                ))
+            .toList();
+
+        return Right(list);
+      },
     );
   }
 }
@@ -64,4 +86,42 @@ class Params {
       cityIbgeCode: cityIbgeCode,
     );
   }
+}
+
+/// Objeto representando o resultado retornado pelo [GetCases].
+///
+/// É encorajado o uso desse objeto na ViewModel ao invés da entidade, pois caso
+/// a entidade mude, a ViewModel não sofrerá com problemas inesperado.
+class BulletinReturned {
+  final DateTime? date;
+  final String? state;
+  final String? city;
+  final PlaceType? placeType;
+  final int? confirmed;
+  final int? deaths;
+  final bool? isLast;
+  final int? estimatedPopulation;
+  final int? estimatedPopulation2019;
+  final String? cityIbgeCode;
+  final double? confirmedPer100kInhabitants;
+  final double? deathRate;
+  final int? orderForPlace;
+
+  const BulletinReturned({
+    this.date,
+    this.state,
+    this.city,
+    this.placeType,
+    this.confirmed,
+    this.deaths,
+    this.isLast,
+    this.estimatedPopulation,
+    this.estimatedPopulation2019,
+    this.cityIbgeCode,
+    this.confirmedPer100kInhabitants,
+    this.deathRate,
+    this.orderForPlace,
+  });
+
+  double get rateFormated => deathRate! * 100;
 }

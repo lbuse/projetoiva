@@ -70,11 +70,11 @@ mixin _$BulletinsState on _BulletinsState, Store {
           Computed<String>(() => super.hasFiltersChanged,
               name: '_BulletinsState.hasFiltersChanged'))
       .value;
-  Computed<ObservableList<BulletinDetails>>? _$bulletinsByDateComputed;
+  Computed<ObservableList<BulletinReturned>>? _$bulletinsByDateComputed;
 
   @override
-  ObservableList<BulletinDetails> get bulletinsByDate =>
-      (_$bulletinsByDateComputed ??= Computed<ObservableList<BulletinDetails>>(
+  ObservableList<BulletinReturned> get bulletinsByDate =>
+      (_$bulletinsByDateComputed ??= Computed<ObservableList<BulletinReturned>>(
               () => super.bulletinsByDate,
               name: '_BulletinsState.bulletinsByDate'))
           .value;
@@ -97,13 +97,13 @@ mixin _$BulletinsState on _BulletinsState, Store {
   final _$bulletinsAtom = Atom(name: '_BulletinsState.bulletins');
 
   @override
-  ObservableList<BulletinDetails> get bulletins {
+  ObservableList<BulletinReturned> get bulletins {
     _$bulletinsAtom.reportRead();
     return super.bulletins;
   }
 
   @override
-  set bulletins(ObservableList<BulletinDetails> value) {
+  set bulletins(ObservableList<BulletinReturned> value) {
     _$bulletinsAtom.reportWrite(value, super.bulletins, () {
       super.bulletins = value;
     });
@@ -171,7 +171,7 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void changeBulletins(List<BulletinDetails> list) {
+  void changeBulletins(List<BulletinReturned> list) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.changeBulletins');
     try {
@@ -182,7 +182,7 @@ mixin _$BulletinsState on _BulletinsState, Store {
   }
 
   @override
-  void addBulletins(List<BulletinDetails> list) {
+  void addBulletins(List<BulletinReturned> list) {
     final _$actionInfo = _$_BulletinsStateActionController.startAction(
         name: '_BulletinsState.addBulletins');
     try {

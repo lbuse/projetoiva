@@ -26,7 +26,7 @@ abstract class _BulletinsState with Store {
   @observable
   int page = 1;
   @observable
-  ObservableList<BulletinDetails> bulletins = ObservableList();
+  ObservableList<BulletinReturned> bulletins = ObservableList();
   @observable
   bool isLoading = false;
   @observable
@@ -54,8 +54,8 @@ abstract class _BulletinsState with Store {
   @computed
   String get hasFiltersChanged => state + city + cityIbgeCode;
   @computed
-  ObservableList<BulletinDetails> get bulletinsByDate {
-    final ObservableList<BulletinDetails> listByDate = ObservableList.of([]);
+  ObservableList<BulletinReturned> get bulletinsByDate {
+    final ObservableList<BulletinReturned> listByDate = ObservableList.of([]);
     final tempList = bulletins.where(
       (i) =>
           i.placeType ==
@@ -65,7 +65,7 @@ abstract class _BulletinsState with Store {
     for (final d in dates) {
       final bulletinOfDate = tempList
           .where((b) => b.date!.isAtSameMomentAs(d!))
-          .fold<BulletinDetails>(BulletinDetails(), (prev, next) {
+          .fold<BulletinReturned>(BulletinReturned(), (prev, next) {
         final confirmed = (prev.confirmed ?? 0) + (next.confirmed ?? 0);
         final deaths = (prev.deaths ?? 0) + (next.deaths ?? 0);
         final estimatedPopulation =
@@ -73,7 +73,7 @@ abstract class _BulletinsState with Store {
         final estimatedPopulation2019 = (prev.estimatedPopulation2019 ?? 0) +
             (next.estimatedPopulation2019 ?? 0);
 
-        return BulletinDetails(
+        return BulletinReturned(
           date: next.date,
           state: next.state,
           city: next.city,
@@ -110,7 +110,7 @@ abstract class _BulletinsState with Store {
   }
 
   // @computed
-  // ObservableList<List<BulletinDetails>> get bulletinsByState {
+  // ObservableList<List<BulletinReturned>> get bulletinsByState {
   //   final tempList = List.of(
   //     bulletins.where((i) => i.placeType == PlaceType.state),
   //   );
@@ -128,14 +128,14 @@ abstract class _BulletinsState with Store {
   // }
 
   // @computed
-  // ObservableList<List<BulletinDetails>> get bulletinsByCity {
+  // ObservableList<List<BulletinReturned>> get bulletinsByCity {
   //   final tempList = List.of(
   //     bulletins.where((i) => i.placeType == PlaceType.city),
   //   );
   //   final cities = tempList.map((b) => b.cityIbgeCode).toSet();
   //   tempList.sort((a, b) => a.city!.compareTo(b.city!));
 
-  //   final List<List<BulletinDetails>> bulletinsByCity = [];
+  //   final List<List<BulletinReturned>> bulletinsByCity = [];
   //   for (final city in cities) {
   //     final bulletinsOfCity = bulletins.where((b) {
   //       if (cityIbgeCode.isNotNullAndNotEmpty && city.isNotNullAndNotEmpty) {
@@ -154,11 +154,11 @@ abstract class _BulletinsState with Store {
   // }
 
   // @computed
-  // ObservableList<List<BulletinDetails>> get bulletinsByPlaceType =>
+  // ObservableList<List<BulletinReturned>> get bulletinsByPlaceType =>
   //     placeType == PlaceType.city ? bulletinsByCity : bulletinsByState;
 
   // @computed
-  // ObservableList<List<BulletinDetails>> get bulletinsByInterval {
+  // ObservableList<List<BulletinReturned>> get bulletinsByInterval {
   //   final tempList = List.of(listOfBulletinsByPlaceType);
   //   for (final bulletinsByCategory in tempList) {
   //     final firstDate = bulletinsByCategory.first.date;
@@ -178,10 +178,10 @@ abstract class _BulletinsState with Store {
   @action
   void changePage(int value) => page = value;
   @action
-  void changeBulletins(List<BulletinDetails> list) =>
+  void changeBulletins(List<BulletinReturned> list) =>
       bulletins = ObservableList.of(list);
   @action
-  void addBulletins(List<BulletinDetails> list) =>
+  void addBulletins(List<BulletinReturned> list) =>
       bulletins.addAll(ObservableList.of(list));
   @action
   void changeIsLoading(bool value) => isLoading = value;

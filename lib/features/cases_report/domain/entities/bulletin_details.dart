@@ -47,5 +47,25 @@ class BulletinDetails {
     this.orderForPlace,
   });
 
-  double get rateFormated => deathRate! * 100;
+  bool get isDateValid => date != null;
+  bool get isStateValid => state != null && state!.isNotEmpty;
+  bool get isCityValid => city != null && city!.isNotEmpty;
+  bool get isPlaceTypeValid => placeType != null;
+  bool get isConfirmedValid => confirmed != null && confirmed! >= 0;
+  bool get isDeathsValid => deaths != null && deaths! >= 0;
+  bool get isLastValid => isLast != null;
+  bool get isEstimatedPopulationValid =>
+      estimatedPopulation != null && estimatedPopulation! >= 0;
+  bool get isEstimatedPopulation2019Valid =>
+      estimatedPopulation2019 != null && estimatedPopulation2019! >= 0;
+  bool get isCityIbgeCode => cityIbgeCode != null && cityIbgeCode!.isNotEmpty;
+  bool get isConfirmedPer100kInhabitantsValid =>
+      confirmedPer100kInhabitants != null && confirmedPer100kInhabitants! >= 0;
+  bool get isDeathRateValid => deathRate != null;
+  bool get isOrderForPlaceValid => orderForPlace != null && orderForPlace! >= 0;
+  bool get isValid =>
+      isDateValid &&
+      (isStateValid || isCityValid) &&
+      isConfirmedValid &&
+      isDeathsValid;
 }
