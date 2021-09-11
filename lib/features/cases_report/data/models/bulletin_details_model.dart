@@ -17,7 +17,11 @@ class BulletinDetailsEnvelope {
   final List<BulletinDetailsModel>? bulletins;
 
   const BulletinDetailsEnvelope(
-      this.count, this.next, this.previous, this.bulletins);
+    this.count,
+    this.next,
+    this.previous,
+    this.bulletins,
+  );
 
   factory BulletinDetailsEnvelope.fromJson(Map<String, dynamic> json) =>
       _$BulletinDetailsEnvelopeFromJson(json);
