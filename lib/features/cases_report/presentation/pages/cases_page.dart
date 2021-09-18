@@ -3,11 +3,11 @@ import 'package:flutter/rendering.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
 import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
-import 'package:projetoiva/features/cases_report/domain/usecases/get_cases.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
 
 import '../../data/datasources/bulletin_data_source.dart';
 import '../../data/repositories/bulletin_repository_impl.dart';
+import '../../domain/usecases/get_cases.dart';
 import '../stores/bulletins_state.dart';
 
 enum MetricType {
