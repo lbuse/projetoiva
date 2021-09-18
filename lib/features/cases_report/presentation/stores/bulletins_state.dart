@@ -1,7 +1,7 @@
 import 'package:get_it/get_it.dart';
 import 'package:mobx/mobx.dart';
-import 'package:projetoiva/features/panel/presentation/stores/panel_state.dart';
 
+import '../../../panel/presentation/stores/panel_state.dart';
 import '../../domain/entities/bulletin.dart';
 import '../../domain/entities/bulletin_details.dart';
 import '../../domain/repositories/bulletin_repository.dart';

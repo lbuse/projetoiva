@@ -137,39 +137,6 @@ class _PanelPageState extends State<PanelPage> {
         mainAxisAlignment: MainAxisAlignment.end,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // SizedBox(
-          //   width: 180,
-          //   child: Observer(
-          //     builder: (_) => DatePicker(
-          //       currentDate: panelState.initialDateStringToDateTime,
-          //       controller: initialDateController,
-          //       label: 'Data',
-          //       onChanged: panelState.changeInitialDate,
-          //       onSelected: (value) {
-          //         panelState.changeInitialDate(value);
-          //         setInitialDateValueViaController(value);
-          //       },
-          //     ),
-          //   ),
-          // ),
-          // const SizedBox(width: 8.0),
-          // SizedBox(
-          //   width: 180,
-          //   child: Observer(
-          //     builder: (_) => DatePicker(
-          //       currentDate: panelState.finalDateStringToDateTime,
-          //       controller: finalDateController,
-          //       label: 'Data Final',
-          //       onChanged: panelState.changeFinalDate,
-          //       onSelected: (value) {
-          //         panelState.changeFinalDate(value);
-          //         setFinalDateValueViaController(value);
-          //       },
-          //       validator: (_) =>
-          //           panelState.isFinalDateValid ? null : 'Data inválida',
-          //     ),
-          //   ),
-          // ),
           const SizedBox(width: 8.0),
           Flexible(
             fit: FlexFit.tight,
@@ -203,15 +170,6 @@ class _PanelPageState extends State<PanelPage> {
               ),
             ),
           ),
-          // const SizedBox(width: 8.0),
-          // Flexible(
-          //   fit: FlexFit.loose,
-          //   child: IconButton(
-          //     icon: Icon(Icons.search_outlined),
-          //     padding: EdgeInsets.zero,
-          //     onPressed: () => panelState.changeSubmitTimeStamp(DateTime.now()),
-          //   ),
-          // ),
         ],
       ),
     );
@@ -240,22 +198,18 @@ class _PanelPageState extends State<PanelPage> {
                 isDense: true,
                 labelText: labelText,
               ),
-        ),
-        AnimatedSwitcher(
-          duration: kThemeAnimationDuration,
-          child: isLoading
-              ? Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                  height: 3.0,
-                  child: const ClipRRect(
-                    borderRadius: BorderRadius.only(
-                      bottomLeft: Radius.circular(20),
-                      bottomRight: Radius.circular(20),
+          icon: AnimatedSwitcher(
+            duration: kThemeAnimationDuration,
+            child: isLoading
+                ? const SizedBox(
+                    width: 20,
+                    height: 20,
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3.0,
                     ),
-                    child: LinearProgressIndicator(),
-                  ),
-                )
-              : const SizedBox(height: 3.0),
+                  )
+                : const Icon(Icons.arrow_drop_down),
+          ),
         ),
       ],
     );

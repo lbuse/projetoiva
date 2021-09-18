@@ -13,6 +13,7 @@ import '../stores/bulletins_state.dart';
 enum MetricType {
   cases,
   deaths,
+  deathRate,
 }
 
 class CasesPage extends StatefulWidget {
@@ -166,6 +167,17 @@ class _CasesPageState extends State<CasesPage> {
           ),
         ),
       ),
+      const SizedBox(width: 8.0, height: 8.0),
+      Flexible(
+        child: Observer(
+          builder: (_) => _buildSfCartesianChart(
+            title: 'Taxa de mortalidade',
+            lineSeriesName: 'Mortalidade',
+            bulletins: bulletinsState.bulletinsByDate,
+            metricType: MetricType.deathRate,
+          ),
+        ),
+      ),
     ];
   }
 
@@ -193,8 +205,11 @@ class _CasesPageState extends State<CasesPage> {
                     text: title,
                   ),
                   tooltipBehavior: TooltipBehavior(enable: true),
+                  enableAxisAnimation: true,
                   primaryYAxis: NumericAxis(
                     title: AxisTitle(text: yAxisTitle),
+                    labelFormat:
+                        metricType == MetricType.deathRate ? '{value}%' : null,
                   ),
                   primaryXAxis: DateTimeCategoryAxis(
                     title: AxisTitle(text: xAxisTitle),
@@ -202,17 +217,21 @@ class _CasesPageState extends State<CasesPage> {
                   ),
                   series: <ChartSeries<BulletinReturned, dynamic>>[
                     FastLineSeries<BulletinReturned, dynamic>(
-                        dataSource: bulletins,
-                        xValueMapper: (bulletins, _) => bulletins.date,
-                        yValueMapper: (bulletins, _) {
-                          switch (metricType) {
-                            case MetricType.deaths:
-                              return bulletins.deaths;
-                            default:
-                              return bulletins.confirmed;
-                          }
-                        },
-                        name: lineSeriesName),
+                      dataSource: bulletins,
+                      xValueMapper: (bulletin, _) => bulletin.date,
+                      yValueMapper: (bulletin, _) {
+                        switch (metricType) {
+                          case MetricType.deaths:
+                            return bulletin.deaths;
+                          case MetricType.deathRate:
+                            return bulletin.deathRateFormated;
+                          default:
+                            return bulletin.confirmed;
+                        }
+                      },
+                      name: lineSeriesName,
+                      color: Theme.of(context).primaryColor,
+                    ),
                   ],
                 ),
               ),

@@ -123,5 +123,5 @@ class BulletinReturned {
     this.orderForPlace,
   });
 
-  double get rateFormated => deathRate! * 100;
+  double get deathRateFormated => deathRate! * 100;
 }
