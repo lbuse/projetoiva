@@ -44,7 +44,7 @@ class VaccinationDataSourceImpl implements VaccinationDataSource {
       Iterable i = VaccinationEnvelope.fromJson(
             json.decode(utf8.decode(response.bodyBytes)),
           ).data?.vaccinesApplied ??
-          Iterable.empty();
+          const Iterable.empty();
       return List<VaccinationModel>.from(i.map((model) => model.data));
     } else {
       throw ServerException(

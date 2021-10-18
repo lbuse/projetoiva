@@ -47,7 +47,7 @@ class DatePicker extends StatelessWidget {
               horizontal: 16.0,
             ),
             suffixIcon: IconButton(
-              icon: Icon(Icons.calendar_today),
+              icon: const Icon(Icons.calendar_today),
               onPressed: () => _selectDate(context),
             ),
           ),
@@ -62,7 +62,7 @@ class DatePicker extends StatelessWidget {
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
-      locale: Locale('pt', 'BR'),
+      locale: const Locale('pt', 'BR'),
       context: context,
       initialDate: currentDate ?? DateTime.now(),
       currentDate: currentDate ?? DateTime.now(),

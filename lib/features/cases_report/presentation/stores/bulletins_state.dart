@@ -15,40 +15,40 @@ part 'bulletins_state.g.dart';
 /// informação.
 class BulletinsState extends _BulletinsState with _$BulletinsState {
   BulletinsState(BulletinRepository repository) {
-    super.repository = repository;
+    super._repository = repository;
   }
 }
 
 abstract class _BulletinsState with Store {
-  final panelState = GetIt.instance<PanelState>();
-  late BulletinRepository repository;
+  final _panelState = GetIt.instance<PanelState>();
+  late BulletinRepository _repository;
 
   @observable
   int page = 1;
-  @observable
-  ObservableList<BulletinReturned> bulletins = ObservableList();
+  @readonly
+  ObservableList<BulletinReturned> _bulletins = ObservableList();
   @observable
   bool isLoading = false;
   @observable
   bool allBulletinsAreLoaded = false;
-  @observable
-  bool isFirstLoading = true;
+  @readonly
+  bool _isFirstLoading = true;
 
   @computed
-  DateTime? get date => panelState.initialDateStringToDateTime;
+  DateTime? get date => _panelState.initialDateStringToDateTime;
   @computed
-  String get state => panelState.selectedUfInitials;
+  String get state => _panelState.selectedUfInitials;
   @computed
-  String get city => panelState.selectedCityName;
+  String get city => _panelState.selectedCityName;
   @computed
   String get cityIbgeCode =>
-      panelState.selectedCityValueOrNull?.toString() ?? '';
+      _panelState.selectedCityValueOrNull?.toString() ?? '';
   @computed
   PlaceType get placeType => city.isNotEmpty ? PlaceType.city : PlaceType.state;
   @computed
-  bool get hasBulletins => bulletins.isNotEmpty;
+  bool get hasBulletins => _bulletins.isNotEmpty;
   @computed
-  bool get nothingFound => !hasBulletins && !isFirstLoading;
+  bool get nothingFound => !hasBulletins && !_isFirstLoading;
   @computed
   bool get isLoadMoreBulletinsEnabled => !allBulletinsAreLoaded && !isLoading;
   @computed
@@ -56,7 +56,7 @@ abstract class _BulletinsState with Store {
   @computed
   ObservableList<BulletinReturned> get bulletinsByDate {
     final ObservableList<BulletinReturned> listByDate = ObservableList.of([]);
-    final tempList = bulletins.where(
+    final tempList = _bulletins.reversed.where(
       (i) =>
           i.placeType ==
           (placeType == PlaceType.city ? PlaceType.city : PlaceType.state),
@@ -65,7 +65,7 @@ abstract class _BulletinsState with Store {
     for (final d in dates) {
       final bulletinOfDate = tempList
           .where((b) => b.date!.isAtSameMomentAs(d!))
-          .fold<BulletinReturned>(BulletinReturned(), (prev, next) {
+          .fold<BulletinReturned>(const BulletinReturned(), (prev, next) {
         final confirmed = (prev.confirmed ?? 0) + (next.confirmed ?? 0);
         final deaths = (prev.deaths ?? 0) + (next.deaths ?? 0);
         final estimatedPopulation =
@@ -97,8 +97,8 @@ abstract class _BulletinsState with Store {
     // Isso previne que um dia que não está completo devido a paginação
     // seja carregado.
     if (listByDate.length > 2) {
-      final olderBulletin = bulletins.last;
-      final secondOlderBulletin = bulletins.elementAt(1);
+      final olderBulletin = _bulletins.last;
+      final secondOlderBulletin = _bulletins.elementAt(1);
       final diff =
           (olderBulletin.confirmed! / secondOlderBulletin.confirmed!) * 100;
       if (diff >= 5) {
@@ -113,24 +113,25 @@ abstract class _BulletinsState with Store {
   void changePage(int value) => page = value;
   @action
   void changeBulletins(List<BulletinReturned> list) =>
-      bulletins = ObservableList.of(list);
+      _bulletins = ObservableList.of(list);
   @action
   void addBulletins(List<BulletinReturned> list) =>
-      bulletins.addAll(ObservableList.of(list));
+      _bulletins.addAll(ObservableList.of(list));
   @action
   void changeIsLoading(bool value) => isLoading = value;
   @action
   void changeAllBulletinsAreLoaded(bool value) => allBulletinsAreLoaded = value;
   @action
-  void changeErrorMessage(String value) => panelState.changeErrorMessage(value);
+  void changeErrorMessage(String value) =>
+      _panelState.changeErrorMessage(value);
   @action
-  void changeIsFirstLoading(bool value) => isFirstLoading = value;
+  void changeIsFirstLoading(bool value) => _isFirstLoading = value;
 
   /// Requisita lista de boletins
   Future<void> loadBulletins({int page = 1}) async {
     changePage(page);
     changeIsLoading(true);
-    final actual = await GetCases(repository)(Params(
+    final actual = await GetCases(_repository)(Params(
       page: page,
       date: date,
       placeType: placeType,

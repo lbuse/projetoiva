@@ -34,7 +34,7 @@ class BulletinRepositoryImpl implements BulletinRepository {
         message: e.message,
       ));
     } on Exception {
-      return Left(GeneralFailure(
+      return const Left(GeneralFailure(
         message: 'Erro desconhecido',
       ));
     }

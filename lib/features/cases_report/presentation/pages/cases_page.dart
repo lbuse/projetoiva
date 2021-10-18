@@ -17,6 +17,8 @@ enum MetricType {
 }
 
 class CasesPage extends StatefulWidget {
+  const CasesPage({Key? key}) : super(key: key);
+
   @override
   _CasesPageState createState() => _CasesPageState();
 }
@@ -189,7 +191,7 @@ class _CasesPageState extends State<CasesPage> {
     String? lineSeriesName,
     required MetricType metricType,
     double? width,
-    double? height: 400,
+    double? height = 400,
   }) {
     return AnimatedSwitcher(
       duration: kThemeAnimationDuration,

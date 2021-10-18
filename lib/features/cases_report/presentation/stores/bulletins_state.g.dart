@@ -94,18 +94,20 @@ mixin _$BulletinsState on _BulletinsState, Store {
     });
   }
 
-  final _$bulletinsAtom = Atom(name: '_BulletinsState.bulletins');
+  final _$_bulletinsAtom = Atom(name: '_BulletinsState._bulletins');
 
-  @override
   ObservableList<BulletinReturned> get bulletins {
-    _$bulletinsAtom.reportRead();
-    return super.bulletins;
+    _$_bulletinsAtom.reportRead();
+    return super._bulletins;
   }
 
   @override
-  set bulletins(ObservableList<BulletinReturned> value) {
-    _$bulletinsAtom.reportWrite(value, super.bulletins, () {
-      super.bulletins = value;
+  ObservableList<BulletinReturned> get _bulletins => bulletins;
+
+  @override
+  set _bulletins(ObservableList<BulletinReturned> value) {
+    _$_bulletinsAtom.reportWrite(value, super._bulletins, () {
+      super._bulletins = value;
     });
   }
 
@@ -141,18 +143,20 @@ mixin _$BulletinsState on _BulletinsState, Store {
     });
   }
 
-  final _$isFirstLoadingAtom = Atom(name: '_BulletinsState.isFirstLoading');
+  final _$_isFirstLoadingAtom = Atom(name: '_BulletinsState._isFirstLoading');
 
-  @override
   bool get isFirstLoading {
-    _$isFirstLoadingAtom.reportRead();
-    return super.isFirstLoading;
+    _$_isFirstLoadingAtom.reportRead();
+    return super._isFirstLoading;
   }
 
   @override
-  set isFirstLoading(bool value) {
-    _$isFirstLoadingAtom.reportWrite(value, super.isFirstLoading, () {
-      super.isFirstLoading = value;
+  bool get _isFirstLoading => isFirstLoading;
+
+  @override
+  set _isFirstLoading(bool value) {
+    _$_isFirstLoadingAtom.reportWrite(value, super._isFirstLoading, () {
+      super._isFirstLoading = value;
     });
   }
 
@@ -240,10 +244,8 @@ mixin _$BulletinsState on _BulletinsState, Store {
   String toString() {
     return '''
 page: ${page},
-bulletins: ${bulletins},
 isLoading: ${isLoading},
 allBulletinsAreLoaded: ${allBulletinsAreLoaded},
-isFirstLoading: ${isFirstLoading},
 date: ${date},
 state: ${state},
 city: ${city},

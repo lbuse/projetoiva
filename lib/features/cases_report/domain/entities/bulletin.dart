@@ -7,8 +7,11 @@ import 'package:projetoiva/core/helpers/formatter.dart';
 /// city = 'city' resultado por cidade
 /// state = 'state' resultado por estados
 enum PlaceType {
+  @JsonValue('')
   all,
+  @JsonValue('city')
   city,
+  @JsonValue('state')
   state,
 }
 
@@ -19,11 +22,7 @@ class Bulletin {
   final DateTime? date;
   final String? state;
   final String? city;
-  @JsonKey(
-    name: 'place_type',
-    fromJson: stringToPlaceType,
-    toJson: placeTypeToStringOrEmpty,
-  )
+  @JsonKey(name: 'place_type')
   final PlaceType? placeType;
   @JsonKey(name: 'is_last')
   final bool? isLast;

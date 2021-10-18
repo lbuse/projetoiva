@@ -30,13 +30,6 @@ mixin _$PanelState on _PanelState, Store {
           Computed<bool>(() => super.isCitiesInputEnabled,
               name: '_PanelState.isCitiesInputEnabled'))
       .value;
-  Computed<String>? _$initialDateFormattedComputed;
-
-  @override
-  String get initialDateFormatted => (_$initialDateFormattedComputed ??=
-          Computed<String>(() => super.initialDateFormatted,
-              name: '_PanelState.initialDateFormatted'))
-      .value;
   Computed<DateTime?>? _$initialDateStringToDateTimeComputed;
 
   @override
@@ -88,33 +81,37 @@ mixin _$PanelState on _PanelState, Store {
               name: '_PanelState.selectedCityName'))
       .value;
 
-  final _$selectedUfAtom = Atom(name: '_PanelState.selectedUf');
+  final _$_selectedUfAtom = Atom(name: '_PanelState._selectedUf');
 
-  @override
   int get selectedUf {
-    _$selectedUfAtom.reportRead();
-    return super.selectedUf;
+    _$_selectedUfAtom.reportRead();
+    return super._selectedUf;
   }
 
   @override
-  set selectedUf(int value) {
-    _$selectedUfAtom.reportWrite(value, super.selectedUf, () {
-      super.selectedUf = value;
+  int get _selectedUf => selectedUf;
+
+  @override
+  set _selectedUf(int value) {
+    _$_selectedUfAtom.reportWrite(value, super._selectedUf, () {
+      super._selectedUf = value;
     });
   }
 
-  final _$selectedCityAtom = Atom(name: '_PanelState.selectedCity');
+  final _$_selectedCityAtom = Atom(name: '_PanelState._selectedCity');
 
-  @override
   int get selectedCity {
-    _$selectedCityAtom.reportRead();
-    return super.selectedCity;
+    _$_selectedCityAtom.reportRead();
+    return super._selectedCity;
   }
 
   @override
-  set selectedCity(int value) {
-    _$selectedCityAtom.reportWrite(value, super.selectedCity, () {
-      super.selectedCity = value;
+  int get _selectedCity => selectedCity;
+
+  @override
+  set _selectedCity(int value) {
+    _$_selectedCityAtom.reportWrite(value, super._selectedCity, () {
+      super._selectedCity = value;
     });
   }
 
@@ -133,33 +130,37 @@ mixin _$PanelState on _PanelState, Store {
     });
   }
 
-  final _$ufsAtom = Atom(name: '_PanelState.ufs');
+  final _$_ufsAtom = Atom(name: '_PanelState._ufs');
 
-  @override
   ObservableList<Uf> get ufs {
-    _$ufsAtom.reportRead();
-    return super.ufs;
+    _$_ufsAtom.reportRead();
+    return super._ufs;
   }
 
   @override
-  set ufs(ObservableList<Uf> value) {
-    _$ufsAtom.reportWrite(value, super.ufs, () {
-      super.ufs = value;
+  ObservableList<Uf> get _ufs => ufs;
+
+  @override
+  set _ufs(ObservableList<Uf> value) {
+    _$_ufsAtom.reportWrite(value, super._ufs, () {
+      super._ufs = value;
     });
   }
 
-  final _$citiesAtom = Atom(name: '_PanelState.cities');
+  final _$_citiesAtom = Atom(name: '_PanelState._cities');
 
-  @override
   ObservableList<City> get cities {
-    _$citiesAtom.reportRead();
-    return super.cities;
+    _$_citiesAtom.reportRead();
+    return super._cities;
   }
 
   @override
-  set cities(ObservableList<City> value) {
-    _$citiesAtom.reportWrite(value, super.cities, () {
-      super.cities = value;
+  ObservableList<City> get _cities => cities;
+
+  @override
+  set _cities(ObservableList<City> value) {
+    _$_citiesAtom.reportWrite(value, super._cities, () {
+      super._cities = value;
     });
   }
 
@@ -263,17 +264,6 @@ mixin _$PanelState on _PanelState, Store {
   }
 
   @override
-  void changeInitialDate(String value) {
-    final _$actionInfo = _$_PanelStateActionController.startAction(
-        name: '_PanelState.changeInitialDate');
-    try {
-      return super.changeInitialDate(value);
-    } finally {
-      _$_PanelStateActionController.endAction(_$actionInfo);
-    }
-  }
-
-  @override
   void changeUfs(List<Uf> list) {
     final _$actionInfo = _$_PanelStateActionController.startAction(
         name: '_PanelState.changeUfs');
@@ -353,11 +343,7 @@ mixin _$PanelState on _PanelState, Store {
   @override
   String toString() {
     return '''
-selectedUf: ${selectedUf},
-selectedCity: ${selectedCity},
 initialDate: ${initialDate},
-ufs: ${ufs},
-cities: ${cities},
 isLoadingUfs: ${isLoadingUfs},
 isLoadingCities: ${isLoadingCities},
 isLoading: ${isLoading},
@@ -366,7 +352,6 @@ errorMessage: ${errorMessage},
 isInitialDateValid: ${isInitialDateValid},
 isUfInputEnabled: ${isUfInputEnabled},
 isCitiesInputEnabled: ${isCitiesInputEnabled},
-initialDateFormatted: ${initialDateFormatted},
 initialDateStringToDateTime: ${initialDateStringToDateTime},
 ufMenuItems: ${ufMenuItems},
 cityMenuItems: ${cityMenuItems},

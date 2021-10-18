@@ -6,10 +6,8 @@ part of 'uf_model.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-UfModel _$UfModelFromJson(Map<String, dynamic> json) {
-  return UfModel(
-    id: json['id'] as int?,
-    nome: json['nome'] as String?,
-    sigla: json['sigla'] as String?,
-  );
-}
+UfModel _$UfModelFromJson(Map<String, dynamic> json) => UfModel(
+      id: json['id'] as int?,
+      nome: json['nome'] as String?,
+      sigla: json['sigla'] as String?,
+    );

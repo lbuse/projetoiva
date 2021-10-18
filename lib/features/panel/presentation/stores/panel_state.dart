@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
 import 'package:mobx/mobx.dart';
 
 import '../../../../core/usecases/usecase.dart';
@@ -29,18 +28,18 @@ abstract class _PanelState with Store {
   late UfRepository _ufRepository;
   late CityRepository _cityRepository;
 
-  @observable
-  int selectedUf = 0;
-  @observable
-  int selectedCity = 0;
+  @readonly
+  int _selectedUf = 0;
+  @readonly
+  int _selectedCity = 0;
   @observable
   String initialDate = '';
   // @observable
   // String finalDate = '';
-  @observable
-  ObservableList<Uf> ufs = ObservableList();
-  @observable
-  ObservableList<City> cities = ObservableList.of([
+  @readonly
+  ObservableList<Uf> _ufs = ObservableList();
+  @readonly
+  ObservableList<City> _cities = ObservableList.of([
     City(id: 0, nome: 'Nenhuma'),
   ]);
   @observable
@@ -64,14 +63,14 @@ abstract class _PanelState with Store {
   bool get isUfInputEnabled => !isLoadingUfs && !isLoadingCities;
   @computed
   bool get isCitiesInputEnabled => isUfInputEnabled;
-  @computed
-  String get initialDateFormatted {
-    if (initialDate.isEmpty) {
-      return DateFormat('dd/MM/yyyy').format(DateTime.now());
-    } else {
-      return initialDate;
-    }
-  }
+  // @computed
+  // String get initialDateFormatted {
+  //   if (initialDate.isEmpty) {
+  //     return DateFormat('dd/MM/yyyy').format(DateTime.now());
+  //   } else {
+  //     return initialDate;
+  //   }
+  // }
 
   // @computed
   // String get finalDateFormatted {
@@ -113,37 +112,37 @@ abstract class _PanelState with Store {
   // }
 
   @computed
-  List<DropdownMenuItem<int>> get ufMenuItems => ufs
+  List<DropdownMenuItem<int>> get ufMenuItems => _ufs
       .map((uf) => DropdownMenuItem<int>(
             value: uf.id,
             child: Text(uf.nome!),
           ))
       .toList();
   @computed
-  List<DropdownMenuItem<int>> get cityMenuItems => cities
+  List<DropdownMenuItem<int>> get cityMenuItems => _cities
       .map((city) => DropdownMenuItem<int>(
             value: city.id,
             child: Text(city.nome!),
           ))
       .toList();
   @computed
-  int? get selectedUfValueOrNull => selectedUf <= 0 ? null : selectedUf;
+  int? get selectedUfValueOrNull => _selectedUf <= 0 ? null : _selectedUf;
   @computed
   String get selectedUfInitials =>
-      ufs
+      _ufs
           .firstWhere(
-            (uf) => selectedUf > 0 && uf.id == selectedUf,
+            (uf) => _selectedUf > 0 && uf.id == _selectedUf,
             orElse: () => Uf(id: 0, nome: '', sigla: ''),
           )
           .sigla ??
       '';
   @computed
-  int? get selectedCityValueOrNull => selectedCity <= 0 ? null : selectedCity;
+  int? get selectedCityValueOrNull => _selectedCity <= 0 ? null : _selectedCity;
   @computed
   String get selectedCityName =>
-      cities
+      _cities
           .firstWhere(
-            (city) => selectedCity > 0 && city.id == selectedCity,
+            (city) => _selectedCity > 0 && city.id == _selectedCity,
             orElse: () => City(id: 0, nome: ''),
           )
           .nome ??
@@ -154,9 +153,9 @@ abstract class _PanelState with Store {
     if (value == null || value == 0) {
       changeSelectedCity(0);
       changeCities([]);
-      selectedUf = 0;
-    } else if (value > 0 && value != selectedUf) {
-      selectedUf = value;
+      _selectedUf = 0;
+    } else if (value > 0 && value != _selectedUf) {
+      _selectedUf = value;
       changeSelectedCity(0);
       loadCities();
     }
@@ -164,22 +163,22 @@ abstract class _PanelState with Store {
 
   @action
   void changeSelectedCity(int? value) =>
-      selectedCity = value == null || value < 0 ? 0 : value;
-  @action
-  void changeInitialDate(String value) => initialDate = value;
+      _selectedCity = value == null || value < 0 ? 0 : value;
+  // @action
+  // void changeInitialDate(String value) => initialDate = value;
   // @action
   // void changeFinalDate(String value) =>
   //     finalDate = value ?? DateTime.now().toString();
   @action
   void changeUfs(List<Uf> list) {
     final defaultItem = Uf(id: 0, nome: 'Nenhum', sigla: '');
-    ufs = ObservableList.of([defaultItem, ...list]);
+    _ufs = ObservableList.of([defaultItem, ...list]);
   }
 
   @action
   void changeCities(List<City> list) {
     final defaultItem = City(id: 0, nome: 'Nenhuma');
-    cities = ObservableList.of([defaultItem, ...list]);
+    _cities = ObservableList.of([defaultItem, ...list]);
   }
 
   @action
@@ -219,7 +218,7 @@ abstract class _PanelState with Store {
   /// que preenchem filtros do painel.
   Future<void> loadCities() async {
     changeIsLoadingCities(true);
-    final sigla = ufs.firstWhere((uf) => uf.id == selectedUf).sigla!;
+    final sigla = _ufs.firstWhere((uf) => uf.id == _selectedUf).sigla!;
     final actual = await GetCitiesByUfs(_cityRepository)(
       Params(sigla),
     );

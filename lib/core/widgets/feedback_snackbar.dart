@@ -34,11 +34,9 @@ abstract class FeedbackSnackbar {
                   ),
                   if (kIsWeb)
                     InkWell(
-                      child: Container(
-                        child: const Icon(
-                          Icons.close,
-                          color: Colors.white,
-                        ),
+                      child: const Icon(
+                        Icons.close,
+                        color: Colors.white,
                       ),
                       onTap: ScaffoldMessenger.of(context).hideCurrentSnackBar,
                     ),
@@ -66,9 +64,9 @@ abstract class FeedbackSnackbar {
   ) {
     switch (type) {
       case SnackbarType.error:
-        return Theme.of(context).errorColor;
+        return Theme.of(context).colorScheme.error;
       case SnackbarType.success:
-        return Theme.of(context).accentColor;
+        return Theme.of(context).colorScheme.secondary;
       default:
         return null;
     }

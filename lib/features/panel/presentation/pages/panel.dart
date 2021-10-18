@@ -88,7 +88,7 @@ class _PanelPageState extends State<PanelPage> {
                           child: RichText(
                             text: TextSpan(
                               children: [
-                                TextSpan(text: 'C'),
+                                const TextSpan(text: 'C'),
                                 WidgetSpan(
                                   child: Image.asset(
                                     'assets/images/ic_covid.png',
@@ -96,7 +96,7 @@ class _PanelPageState extends State<PanelPage> {
                                     height: 32,
                                   ),
                                 ),
-                                TextSpan(text: 'vid Search')
+                                const TextSpan(text: 'vid Search')
                               ],
                               style: Theme.of(context)
                                   .textTheme
@@ -117,7 +117,7 @@ class _PanelPageState extends State<PanelPage> {
                 ],
               ),
             ),
-            Positioned(
+            const Positioned(
               left: 0.0,
               top: 72.0,
               right: 0.0,
